@@ -1,6 +1,17 @@
 #include "loop.h"
 
-Loop::Loop() {}
+Loop::Loop()
+{
+    std::fstream mapfile("test.map",std::ios::in);
+    std::string mapstring;
+
+    while(!mapfile.eof())
+        mapfile >> mapstring;
+    mapfile.close();
+
+    map_ = std::unique_ptr<Map>(new Map(mapstring));
+}
+
 Loop::~Loop() {}
 
 void Loop::run()

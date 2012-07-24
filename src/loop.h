@@ -1,16 +1,18 @@
-#include "point.h"
+#ifndef ADVENTURE_LOOP_H
+#define ADVENTURE_LOOP_H
+
+#include "map.h"
 #include "commands.h"
 #include "messages.h"
 
 #include <memory>
-#include <vector>
 #include <iostream>
 #include <string>
+#include <fstream>
 
 class Loop
 {
-    typedef std::vector<std::vector<Point>> Map;
-    std::unique_ptr<Map> map_   = std::unique_ptr<Map>(new Map);
+    std::unique_ptr<Map> map_   = std::unique_ptr<Map>(new Map(""));
     std::string inputString_    = "";
     std::string outputString_   = "";
     bool running_               = true;
@@ -32,3 +34,5 @@ class Loop
         void run();
 
 };
+
+#endif

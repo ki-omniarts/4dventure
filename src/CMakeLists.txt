@@ -13,6 +13,7 @@ SET( 4DVENTURE_VERSION_PATCH "0" )
 SET (4dventureSRC
     ${CMAKE_CURRENT_SOURCE_DIR}/loop.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/point.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/map.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp)
 
 # Flags
