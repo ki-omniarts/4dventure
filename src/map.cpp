@@ -41,7 +41,7 @@ void Map::generateTiles_(const std::string& mapstring)
     Map::Tiles tiles;
     std::vector<char> symbols = {};
     size_t current_line = 0;
-    tiles.push_back({});
+    tiles.push_back(std::vector<Point>());
 
     // go through each char
     for (size_t i = 0; i != mapstring.size(); i++)
@@ -50,7 +50,7 @@ void Map::generateTiles_(const std::string& mapstring)
         if ( mapstring[i] == '\n' )
         {
             current_line++;
-            tiles.push_back({});
+            tiles.push_back(std::vector<Point>());
         } else {
             // is there a reserved char?
             for (size_t s = 0; s != reservedSymbols_.size(); s++)
@@ -58,7 +58,7 @@ void Map::generateTiles_(const std::string& mapstring)
                 if ( mapstring[i] == reservedSymbols_[s] )
                     return;
             }
-            tiles[i].push_back
+            tiles[current_line].push_back
                     (Point(i,current_line,mapstring[i]));
             // add the char to the list of symbols
             {

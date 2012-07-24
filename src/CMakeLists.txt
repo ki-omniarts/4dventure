@@ -1,3 +1,5 @@
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
+
 # about the project
 #------------------
 project( 4dventure )
@@ -7,6 +9,18 @@ SET( 4DVENTURE_VERSION_PATCH "0" )
 
 # Paths
 #------
+
+# Requirements
+#-------------
+include(FindLua50)
+
+if ( NOT ${LUA50_FOUND} )
+    message ( FATAL_ERROR "Lua not found!" )
+endif ( NOT ${LUA50_FOUND} )
+
+include_directories(
+    ${LUA_INCLUDE_DIR}
+)
 
 #Files
 #-----
@@ -26,4 +40,8 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 #--------
 add_executable( ${PROJECT_NAME}
     ${4dventureSRC}
+)
+
+target_link_libraries( ${PROJECT_NAME}
+    ${LUA_LIBRARIES}
 )

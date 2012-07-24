@@ -4,11 +4,14 @@
 #include "map.h"
 #include "commands.h"
 #include "messages.h"
+#include "lua_vars.h"
 
 #include <memory>
 #include <iostream>
 #include <string>
 #include <fstream>
+
+#include "lua.hpp"
 
 class Loop
 {
@@ -16,6 +19,11 @@ class Loop
     std::string inputString_    = "";
     std::string outputString_   = "";
     bool running_               = true;
+
+    // LUA
+    std::shared_ptr<lua_State>L_= 
+        std::shared_ptr<lua_State>(lua_open(),lua_close);
+    static std::string getMap(lua_State* L);
 
     Loop(const Loop&)               = delete;
     Loop(Loop&&)                    = delete;

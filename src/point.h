@@ -7,7 +7,7 @@ class Point
 {
     unsigned int x_     = 0;
     unsigned int y_     = 0;
-    char         tile_  = '$';
+    char      tile_  = '$';
 
     public:
         Point();
