@@ -12,7 +12,7 @@
 
 class Loop
 {
-    std::unique_ptr<Map> map_   = std::unique_ptr<Map>(new Map(""));
+    std::unique_ptr<Map> map_   = std::unique_ptr<Map>(new Map());
     std::string inputString_    = "";
     std::string outputString_   = "";
     bool running_               = true;

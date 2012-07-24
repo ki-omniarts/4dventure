@@ -10,6 +10,7 @@ Loop::Loop()
     mapfile.close();
 
     map_ = std::unique_ptr<Map>(new Map(mapstring));
+    // map_ = std::unique_ptr<Map>(new Map("S"));
 }
 
 Loop::~Loop() {}

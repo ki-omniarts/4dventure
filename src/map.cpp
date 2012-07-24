@@ -38,10 +38,10 @@ Map& Map::operator=(Map&& other)
 
 void Map::generateTiles_(const std::string& mapstring)
 {
-    std::shared_ptr<Map::Tiles> tiles;
+    Map::Tiles tiles;
     std::vector<char> symbols = {};
     size_t current_line = 0;
-    tiles->push_back(std::vector<Point>());
+    tiles.push_back({});
 
     // go through each char
     for (size_t i = 0; i != mapstring.size(); i++)
@@ -50,16 +50,16 @@ void Map::generateTiles_(const std::string& mapstring)
         if ( mapstring[i] == '\n' )
         {
             current_line++;
-            tiles->push_back({});
+            tiles.push_back({});
         } else {
             // is there a reserved char?
             for (size_t s = 0; s != reservedSymbols_.size(); s++)
             {
                 if ( mapstring[i] == reservedSymbols_[s] )
-                    throw MapNotCreated();
+                    return;
             }
-            (*tiles)[i].push_back
-                (Point(i,current_line,mapstring[i]));
+            tiles[i].push_back
+                    (Point(i,current_line,mapstring[i]));
             // add the char to the list of symbols
             {
                 bool not_found = true;
@@ -80,7 +80,7 @@ void Map::generateTiles_(const std::string& mapstring)
     for ( auto c : necessarySymbols_ )
     {
         bool found = false;
-        for ( auto x : *tiles )
+        for ( auto x : tiles )
             for ( auto y : x )
             {
                 if ( c == y.tile() )
@@ -90,8 +90,9 @@ void Map::generateTiles_(const std::string& mapstring)
                 }
             }
         if (!found)
-            throw MapNotCreated();
+            return;
     }
     tiles_      = std::move(tiles);
     symbols_    = std::move(symbols);
+    valid_      = true;
 }

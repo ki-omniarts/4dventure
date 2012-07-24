@@ -10,8 +10,9 @@
 class Map
 {
     typedef std::vector<std::vector<Point>> Tiles;
+    bool valid_ = false;
 
-    std::shared_ptr<Tiles> tiles_ = std::shared_ptr<Tiles>(new Tiles);
+    Tiles tiles_ = {};
 
     // Symbols
     std::vector<char> symbols_  = {};
@@ -22,15 +23,17 @@ class Map
     void generateTiles_(const std::string& mapstring);
 
     public:
+        Map() = default;
         Map(const std::string& mapstring);
         Map(const Map& other);
         Map& operator=(const Map& other);
         Map(Map&& other);
         Map& operator=(Map&& other);
         virtual ~Map();
+
+        // Getter
+        bool valid() { return valid_; }
     
-        // Exception
-        class MapNotCreated {};
 
 };
 
