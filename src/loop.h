@@ -17,14 +17,21 @@ class Loop
 {
     std::unique_ptr<Map> map_   = std::unique_ptr<Map>(new Map());
     std::string inputString_    = "";
-    std::string outputString_   = "";
     bool running_               = true;
+    Point playerPos_            = Point(0,0);
 
     // LUA
     std::shared_ptr<lua_State>L_= 
         std::shared_ptr<lua_State>(lua_open(),lua_close);
     static int setMap_(lua_State* L);
+    static int setPlayerPos_(lua_State* L);
+    static int getPlayerPos_(lua_State* L);
+    static int goNorth_(lua_State* L);
+    static int goSouth_(lua_State* L);
+    static int goWest_(lua_State* L);
+    static int goEast_(lua_State* L);
     static int quit_(lua_State*) { Loop::loop().running_ = false; return 0; }
+    static int tileEvent_(lua_State*);
 
     Loop(const Loop&)               = delete;
     Loop(Loop&&)                    = delete;

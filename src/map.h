@@ -16,7 +16,6 @@ class Map
 
     // Symbols
     std::vector<char> symbols_  = {};
-    static const std::vector<char> necessarySymbols_; 
     static const std::vector<char> reservedSymbols_; 
 
     // Functions
@@ -33,8 +32,9 @@ class Map
 
         // Getter
         bool valid() { return valid_; }
-    
-
+        const Point startpoint();
+        bool exists(const Point& p);
+        char symbol(const Point& p) { return tiles_[p.x()][p.y()].tile(); }
 };
 
 #endif

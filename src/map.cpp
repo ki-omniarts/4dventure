@@ -1,6 +1,5 @@
 #include "map.h"
 
-const std::vector<char> Map::necessarySymbols_  = {'S'};
 const std::vector<char> Map::reservedSymbols_   = {'$'};
 
 Map::~Map() {}
@@ -76,23 +75,25 @@ void Map::generateTiles_(const std::string& mapstring)
             }
         }
     }
-    // check for necessary symbols
-    for ( auto c : necessarySymbols_ )
-    {
-        bool found = false;
-        for ( auto x : tiles )
-            for ( auto y : x )
-            {
-                if ( c == y.tile() )
-                {
-                    found = true;
-                    break;
-                }
-            }
-        if (!found)
-            return;
-    }
     tiles_      = std::move(tiles);
     symbols_    = std::move(symbols);
     valid_      = true;
+}
+
+const Point Map::startpoint()
+{
+    Point p = Point(0,0);
+
+    for(auto x : tiles_)
+        for(auto y : x)
+        {
+            if ( ( y.tile() == 'S' ) && ( p == Point(0,0) ) )
+                p = y;
+        }
+    return p;
+}
+
+bool Map::exists(const Point& p)
+{
+    return ( ( p.x() < tiles_.size() ) && ( p.y() < tiles_[p.x()].size() ) );
 }

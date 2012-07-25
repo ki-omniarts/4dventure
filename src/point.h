@@ -7,7 +7,7 @@ class Point
 {
     unsigned int x_     = 0;
     unsigned int y_     = 0;
-    char      tile_  = '$';
+    char      tile_     = '$';
 
     public:
         Point();
@@ -22,5 +22,18 @@ class Point
         unsigned int y()  const { return y_; }
         char tile()       const { return tile_; } 
 };
+
+inline bool operator==(const Point& lhs, const Point& rhs)
+{
+    if ( lhs.x() == rhs.x() && lhs.y() == rhs.y()
+        && lhs.tile() == rhs.tile() )
+        return true;
+    return false;
+}
+
+inline bool operator!=(const Point& lhs, const Point& rhs)
+{
+    return !(lhs==rhs);
+}
 
 #endif
