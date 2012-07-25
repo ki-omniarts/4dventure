@@ -34,7 +34,7 @@ class Map
         bool valid() { return valid_; }
         const Point startpoint();
         bool exists(const Point& p);
-        char symbol(const Point& p) { return tiles_[p.x()][p.y()].tile(); }
+        char symbol(const Point& p) { return tiles_[p.y()][p.x()].tile(); }
 };
 
 #endif

@@ -11,9 +11,14 @@ const char LUA_GONORTH[]        = "adv_goNorth";
 const char LUA_GOSOUTH[]        = "adv_goSouth";
 const char LUA_GOEAST[]         = "adv_goEast";
 const char LUA_GOWEST[]         = "adv_goWest";
+const char LUA_DOINPUT[]        = "adv_input";
+const char LUA_RANDOMRANGED[]   = "adv_random_ranged";
 
 inline std::string LUA_INPUT(const std::string s)
 { return std::string("adv_input_")+s; }
 
 const char LUA_ONTILE[]         = "adv_onTile";
+const char LUA_OBSTACLE[]       = "adv_obstacle";
+const char LUA_EACHTIME[]       = "adv_eachTime";
+
 #endif

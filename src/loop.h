@@ -5,6 +5,7 @@
 #include "commands.h"
 #include "messages.h"
 #include "lua_vars.h"
+#include "random.h"
 
 #include <memory>
 #include <iostream>
@@ -12,6 +13,8 @@
 #include <fstream>
 
 #include "lua.hpp"
+
+const char INPUT_PREFIX[] = "\t> ";
 
 class Loop
 {
@@ -31,7 +34,12 @@ class Loop
     static int goWest_(lua_State* L);
     static int goEast_(lua_State* L);
     static int quit_(lua_State*) { Loop::loop().running_ = false; return 0; }
-    static int tileEvent_(lua_State*);
+    static int tileEvent_(lua_State* L);
+    static bool obstacle_(lua_State* L,char c);
+    static int input_(lua_State* L);
+
+    enum direction { NORTH,EAST,SOUTH,WEST };
+    static bool walk_( direction dir );
 
     Loop(const Loop&)               = delete;
     Loop(Loop&&)                    = delete;

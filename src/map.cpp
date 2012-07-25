@@ -40,6 +40,7 @@ void Map::generateTiles_(const std::string& mapstring)
     Map::Tiles tiles;
     std::vector<char> symbols = {};
     size_t current_line = 0;
+    size_t current_col  = 0;
     tiles.push_back(std::vector<Point>());
 
     // go through each char
@@ -49,6 +50,7 @@ void Map::generateTiles_(const std::string& mapstring)
         if ( mapstring[i] == '\n' )
         {
             current_line++;
+            current_col = 0;
             tiles.push_back(std::vector<Point>());
         } else {
             // is there a reserved char?
@@ -58,7 +60,7 @@ void Map::generateTiles_(const std::string& mapstring)
                     return;
             }
             tiles[current_line].push_back
-                    (Point(i,current_line,mapstring[i]));
+                    (Point(current_col,current_line,mapstring[i]));
             // add the char to the list of symbols
             {
                 bool not_found = true;
@@ -74,6 +76,8 @@ void Map::generateTiles_(const std::string& mapstring)
                     symbols.push_back(mapstring[i]);
             }
         }
+        if ( mapstring[i] != '\n' )
+            current_col++;
     }
     tiles_      = std::move(tiles);
     symbols_    = std::move(symbols);
@@ -84,16 +88,16 @@ const Point Map::startpoint()
 {
     Point p = Point(0,0);
 
-    for(auto x : tiles_)
-        for(auto y : x)
+    for(auto y : tiles_)
+        for(auto x : y)
         {
-            if ( ( y.tile() == 'S' ) && ( p == Point(0,0) ) )
-                p = y;
+            if ( ( x.tile() == 'S' ) && ( p == Point(0,0) ) )
+                p = x;
         }
     return p;
 }
 
 bool Map::exists(const Point& p)
 {
-    return ( ( p.x() < tiles_.size() ) && ( p.y() < tiles_[p.x()].size() ) );
+    return ( ( p.y() < tiles_.size() ) && ( p.x() < tiles_[p.y()].size() ) );
 }

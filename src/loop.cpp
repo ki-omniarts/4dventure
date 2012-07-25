@@ -25,6 +25,8 @@ void Loop::run(const std::string& filename)
     lua_register(L_.get(),LUA_GOSOUTH,goSouth_);
     lua_register(L_.get(),LUA_GOEAST,goEast_);
     lua_register(L_.get(),LUA_GOWEST,goWest_);
+    lua_register(L_.get(),LUA_DOINPUT,input_);
+    lua_register(L_.get(),LUA_RANDOMRANGED,random_ranged);
 
     luaL_dofile(L_.get(),filename.c_str()); 
     
@@ -37,6 +39,10 @@ void Loop::run(const std::string& filename)
     // actual loop
     while(running_)
     {
+        lua_getglobal(L_.get(), LUA_EACHTIME );
+        if (lua_isfunction(L_.get(),lua_gettop(L_.get())))
+            lua_call(L_.get(),0,0);
+
         input_();
         logic_();
     }
@@ -44,7 +50,7 @@ void Loop::run(const std::string& filename)
 
 void Loop::input_()
 {
-    std::cout << "\t> ";
+    std::cout << INPUT_PREFIX;
     std::cin >> inputString_;
 }
 
@@ -88,10 +94,10 @@ int Loop::getPlayerPos_(lua_State* L)
     lua_pushnumber(L,Loop::loop().playerPos_.x());
     lua_pushnumber(L,Loop::loop().playerPos_.y());
     
-    return 0;
+    return 2;
 }
 
-int Loop::tileEvent_(lua_State*)
+int Loop::tileEvent_(lua_State*)//TODO
 {
     lua_getglobal(Loop::loop().L_.get(), LUA_ONTILE);
     
@@ -106,58 +112,85 @@ int Loop::tileEvent_(lua_State*)
     return 0;
 }
 
+bool Loop::obstacle_(lua_State* L,char c)
+{
+    lua_getglobal(L,LUA_OBSTACLE);
+
+    if (lua_isfunction(L,lua_gettop(L)))
+    {
+        lua_pushstring(L,
+            (std::string("")+c).c_str());
+        lua_call(L,1,1);
+        if ( lua_isboolean(L,lua_gettop(L)) )
+            return lua_toboolean(L,lua_gettop(L));
+    }
+
+    return false;
+}
+
+bool Loop::walk_(direction dir)
+{
+    Point p(0,0);
+    uint currentx = Loop::loop().playerPos_.x();
+    uint currenty = Loop::loop().playerPos_.y();
+
+    switch (dir)
+    {
+        case NORTH:
+            p = Point(currentx,currenty-1);
+            break;
+        case SOUTH:
+            p = Point(currentx,currenty+1);
+            break;
+        case EAST:
+            p = Point(currentx+1,currenty);
+            break;
+        case WEST:
+            p = Point(currentx-1,currenty);
+            break;
+        default:
+            break;
+    }
+    if ( Loop::loop().map_->exists(p) 
+        && !( obstacle_(Loop::loop().L_.get(),Loop::loop().map_->symbol(p)) ) )
+    {
+        Loop::loop().playerPos_ = p;
+        tileEvent_(Loop::loop().L_.get());
+        return true;
+    }
+        
+    return false;
+}
+
 int Loop::goNorth_(lua_State* L)
 {
-    if ( Loop::loop().map_->exists
-        (Point(Loop::loop().playerPos_.x(),Loop::loop().playerPos_.y()-1) ) )
-    {
-        lua_pushboolean(L,true);
-        Loop::loop().playerPos_ =
-            Point(Loop::loop().playerPos_.x(),Loop::loop().playerPos_.y()-1);
-    } else {
-        lua_pushboolean(L,false);
-    }
-    return 0;
+    lua_pushboolean(L,( walk_(NORTH) ));
+    return 1;
 }
 
 int Loop::goSouth_(lua_State* L)
 {
-    if ( Loop::loop().map_->exists
-        (Point(Loop::loop().playerPos_.x(),Loop::loop().playerPos_.y()+1) ) )
-    {
-        lua_pushboolean(L,true);
-        Loop::loop().playerPos_ =
-            Point(Loop::loop().playerPos_.x(),Loop::loop().playerPos_.y()+1);
-    } else {
-        lua_pushboolean(L,false);
-    }
-    return 0;
+    lua_pushboolean(L,( walk_(SOUTH) ));
+    return 1;
 }
 
 int Loop::goEast_(lua_State* L)
 {
-    if ( Loop::loop().map_->exists
-        (Point(Loop::loop().playerPos_.x()+1,Loop::loop().playerPos_.y()) ) )
-    {
-        lua_pushboolean(L,true);
-        Loop::loop().playerPos_ =
-            Point(Loop::loop().playerPos_.x()+1,Loop::loop().playerPos_.y());
-    } else {
-        lua_pushboolean(L,false);
-    }
-    return 0;
+    lua_pushboolean(L,( walk_(EAST) ));
+    return 1;
 }
 
 int Loop::goWest_(lua_State* L)
 {
-    if ( Loop::loop().map_->exists
-        (Point(Loop::loop().playerPos_.x()-1,Loop::loop().playerPos_.y()-1) ) )
-    {
-        lua_pushboolean(L,true);
-        Loop::loop().playerPos_ =
-            Point(Loop::loop().playerPos_.x()-1,Loop::loop().playerPos_.y()-1);
-    } else {
-        lua_pushboolean(L,false);
-    }
-    return 0;
+    lua_pushboolean(L,( walk_(WEST) ));
+    return 1;
+}
+
+int Loop::input_(lua_State* L)
+{
+    std::cout   << INPUT_PREFIX;
+    std::string s;
+    std::cin    >> s;
+    lua_pushstring(L,s.c_str());
+    return 1;
 }
