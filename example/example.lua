@@ -58,7 +58,7 @@ function adv_onTile(string)
         print   ("There is a bridge in front of you. "..
                 "A troll sits in front of it and gives you an angry glance.\n"..
                 ">> Give me all your money or you shall not pass!\n"..
-                "Do you want to give him your money to pass? (Y/N)]]")
+                "Do you want to give him your money to pass? (Y/N)")
         repeat
             print "Choose:"
             input = adv_input();

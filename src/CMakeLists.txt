@@ -13,10 +13,11 @@ SET( 4DVENTURE_VERSION_PATCH "0" )
 # Requirements
 #-------------
 include(FindLua51)
+include(FindLua50)
 
-if ( NOT ${LUA51_FOUND} )
+if ( ( NOT ${LUA51_FOUND} ) AND ( NOT ${LUA50_FOUND} ) )
     message ( FATAL_ERROR "Lua not found!" )
-endif ( NOT ${LUA51_FOUND} )
+endif ( ( NOT ${LUA51_FOUND} ) AND ( NOT ${LUA50_FOUND} ) )
 
 include_directories(
     ${LUA_INCLUDE_DIR}
