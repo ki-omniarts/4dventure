@@ -12,11 +12,11 @@ SET( 4DVENTURE_VERSION_PATCH "0" )
 
 # Requirements
 #-------------
-include(FindLua50)
+include(FindLua51)
 
-if ( NOT ${LUA50_FOUND} )
+if ( NOT ${LUA51_FOUND} )
     message ( FATAL_ERROR "Lua not found!" )
-endif ( NOT ${LUA50_FOUND} )
+endif ( NOT ${LUA51_FOUND} )
 
 include_directories(
     ${LUA_INCLUDE_DIR}
@@ -45,3 +45,7 @@ add_executable( ${PROJECT_NAME}
 target_link_libraries( ${PROJECT_NAME}
     ${LUA_LIBRARIES}
 )
+
+# Install
+#--------
+install (PROGRAMS ${CMAKE_BINARY_DIR}/${PROJECT_NAME} DESTINATION bin)

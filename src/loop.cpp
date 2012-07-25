@@ -1,3 +1,23 @@
+/*
+ * loop.cpp
+ * This file is part of 4dventure
+ *
+ * Copyright (C) 2012 - KiNaudiz
+ *
+ * 4dventure is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * 4dventure is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with 4dventure. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #include "loop.h"
 
 Loop& Loop::loop()
@@ -28,10 +48,17 @@ void Loop::run(const std::string& filename)
     lua_register(L_.get(),LUA_DOINPUT,input_);
     lua_register(L_.get(),LUA_RANDOMRANGED,random_ranged);
 
-    luaL_dofile(L_.get(),filename.c_str()); 
+    if (luaL_dofile(L_.get(),filename.c_str()) == 1)
+    {
+        std::cerr << filename << " is no valid LUA file." << std::endl;
+        return;
+    }
     
     if (!map_->valid())
+    {
         std::cerr << "No valid Map specified." << std::endl;
+        return;
+    }
 
     if (playerPos_ == Point(0,0))
         playerPos_ = map_->startpoint();
