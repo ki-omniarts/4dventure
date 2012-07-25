@@ -2,8 +2,10 @@
 
 int main(int argc,char* argv[])
 {
-    Loop loop;
-    loop.run();
+    if ( argc > 1)
+    {
+        Loop::loop().run(argv[1]);
+    }
 
     return 0;
 }

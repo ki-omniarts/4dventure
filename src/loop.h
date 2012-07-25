@@ -23,7 +23,8 @@ class Loop
     // LUA
     std::shared_ptr<lua_State>L_= 
         std::shared_ptr<lua_State>(lua_open(),lua_close);
-    static std::string getMap(lua_State* L);
+    static int setMap_(lua_State* L);
+    static int quit_(lua_State*) { Loop::loop().running_ = false; return 0; }
 
     Loop(const Loop&)               = delete;
     Loop(Loop&&)                    = delete;
@@ -33,13 +34,15 @@ class Loop
     void input_();
     void logic_();
 
+    Loop();
+
     public:
-        // CONSTRUCTOR
-        Loop();
         virtual ~Loop();
         
+        static Loop& loop();
+
         // FUNCTIONS
-        void run();
+        void run(const std::string& filename);
 
 };
 

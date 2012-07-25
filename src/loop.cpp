@@ -1,29 +1,28 @@
 #include "loop.h"
 
+Loop& Loop::loop()
+{
+    static Loop instance;
+    return instance;
+}
+
 Loop::Loop()
+{}
+
+Loop::~Loop() {}
+
+void Loop::run(const std::string& filename)
 {
     // LUA
     luaopen_base(L_.get());
     luaL_openlibs(L_.get());
-    luaL_dofile(L_.get(),"test.lua"); 
+
+    lua_register(L_.get(),LUA_QUIT,quit_);
+    lua_register(L_.get(),LUA_SETMAP,setMap_);
+
+    luaL_dofile(L_.get(),filename.c_str()); 
     
-    map_ = std::unique_ptr<Map>(new Map(getMap(L_.get())));
-}
-
-std::string Loop::getMap(lua_State* L)
-{
-    lua_getglobal(L, LUA_MAP);
-
-    if(lua_isstring(L,lua_gettop(L)))
-        return lua_tostring(L,-1);
-    std::cout << "not found" << std::endl;
-    return "";
-}
-
-Loop::~Loop() {}
-
-void Loop::run()
-{
+    // actual loop
     while(running_)
     {
         input_();
@@ -44,3 +43,18 @@ void Loop::logic_()
     else
         std::cout << MESSAGE_COMMAND_NOT_FOUND << std::endl;
 }
+
+int Loop::setMap_(lua_State* L)
+{
+    int args = lua_gettop(L);
+    if (args > 0)
+    {
+        if(lua_isstring(L,-args))
+        {
+            Loop::loop().map_.reset(new Map(lua_tostring(L,-args)));
+        }
+    }
+
+    return 0;
+}
+
