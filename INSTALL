@@ -3,7 +3,7 @@
 == What you need ==
  * gcc >= 4.7
  * glibc++
- * Lua >= 5.1
+ * Lua 5.0 or 5.1 (otherwise you'll have to change the CMakeFiles.txt)
  * CMAKE >= 2.8
 
 == How to install ==

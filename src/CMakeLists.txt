@@ -9,15 +9,22 @@ SET( 4DVENTURE_VERSION_PATCH "0" )
 
 # Paths
 #------
+set(CMAKE_MODULE_PATH 
+    ${CMAKE_MODULE_PATH}
+    ${CMAKE_CURRENT_SOURCE_DIR}
+)
 
 # Requirements
 #-------------
-include(FindLua51)
 include(FindLua50)
+include(FindLua51)
+include(FindLua52)
 
-if ( ( NOT ${LUA51_FOUND} ) AND ( NOT ${LUA50_FOUND} ) )
+if ( ( NOT ${LUA51_FOUND} ) AND ( NOT ${LUA50_FOUND} 
+        AND ( NOT ${LUA52_FOUND} ) ) )
     message ( FATAL_ERROR "Lua not found!" )
-endif ( ( NOT ${LUA51_FOUND} ) AND ( NOT ${LUA50_FOUND} ) )
+endif ( ( NOT ${LUA51_FOUND} ) AND ( NOT ${LUA50_FOUND} 
+        AND ( NOT ${LUA52_FOUND} ) ) )
 
 include_directories(
     ${LUA_INCLUDE_DIR}
