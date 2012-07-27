@@ -65,6 +65,13 @@
         Example: Define adv_input_help() to handle a help command.</dd>
     </dl>
     <dl>
+        <dt><b>adv_input_(string)</b></dt>
+        <dd>This function will be called if there is no
+        <b>adv_input[string]()</b> for the user's input.
+        This allows additional characters and spaces in the commands.<br>
+        It should return true if the input is handled here.</dd>
+    </dl>
+    <dl>
         <dt><b>adv_onTile(string)</b></dt>
         <dd>This functions will be called each time the player moves one tile.
         The char on the tile will be given as a string parameter.<br>

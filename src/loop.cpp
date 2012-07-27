@@ -91,7 +91,17 @@ void Loop::logic_()
         if (lua_isfunction(L_.get(),lua_gettop(L_.get())))
             lua_call(L_.get(),0,0);
         else
-            std::cout << MESSAGE_COMMAND_NOT_FOUND << std::endl;
+        {
+            lua_getglobal(L_.get(), LUA_INPUT("").c_str() );
+            if (lua_isfunction(L_.get(),lua_gettop(L_.get())))
+            {
+                lua_pushstring(L_.get(),inputString_.c_str());
+                lua_call(L_.get(),1,1);
+                if (!( lua_isboolean(L_.get(),lua_gettop(L_.get())) )
+                    || !(lua_toboolean(L_.get(),lua_gettop(L_.get()))) )
+                    std::cout << MESSAGE_COMMAND_NOT_FOUND << std::endl;
+            }
+        }
     }
 }
 
