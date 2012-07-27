@@ -1,0 +1,87 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lua Scripting for 4dventure</title>
+</head>
+<body>
+
+    <h1>Lua Scripting for 4dventure</h1>
+
+    <h2>Predefined Functions</h2>
+    <p>The following functions are defined by 4dventure.
+    You may call them in your Lua file to communicate with 4dventure.</p>
+
+    <dl>
+        <dt><b>adv_quit()</b></dt>
+        <dd>Quits 4dventure.<br>No returns, takes no arguments.</dd>
+        <dt><b>adv_setMap(string)</b></dt>
+        <dd>Takes a multi-line string as an argument.
+        Each char of your string will represent a tile.
+        You may set the start point of your initial map using the
+        char 'S'.<br>
+        If your map string is invalid, 4dventure will stop.</dd>
+        <dt><b>adv_setPlayerPosition(x,y)</b></dt>
+        <dd>Takes two number values, one for the position on the 
+        horizontal x axis and one for the position on the vertical y axis.<br>
+        Returns nothing.</dd>
+        <dt><b>adv_getPlayerPosition()</b></dt>
+        <dd>Returns the horizontal x position and the vertical y position.<br>
+        Takes no arguments.</dd>
+        <dt><b>adv_goNorth()</b></dt>
+        <dd>Moves the player one tile up if there is any and it is not marked
+        as an obstacle. (see <b>adv_obstacle</b>)<br>
+        Returns true if the player moved and false if he didn't.<br>
+        Takes no arguments.</dd>
+        <dt><b>adv_goEast()</b></dt>
+        <dd>Moves the player one tile to the right if there is any and it is 
+        not marked as an obstacle. (see <b>adv_obstacle</b>)<br>
+        Returns true if the player moved and false if he didn't.<br>
+        Takes no arguments.</dd>
+        <dt><b>adv_goSouth()</b></dt>
+        <dd>Moves the player one tile down if there is any and it is not marked
+        as an obstacle. (see <b>adv_obstacle</b>)<br>
+        Returns true if the player moved and false if he didn't.<br>
+        Takes no arguments.</dd>
+        <dt><b>adv_goWest()</b></dt>
+        <dd>Moves the player one tile to the left if there is any and it is
+        not marked as an obstacle. (see <b>adv_obstacle</b>)<br>
+        Returns true if the player moved and false if he didn't.<br>
+        Takes no arguments.</dd>
+        <dt><b>adv_input()</b></dt>
+        <dd>Lets the user make an input and returns the input string.<br>
+        Takes no arguments.</dd>
+        <dt><b>adv_random_ranged(ll,uu)</b></dt>
+        <dd>Takes two arguments, a lower limit and an upper limit as
+        number values. It returns a random number between those values.</dd>
+    </dl>
+
+    <h2>User Defined Functions</h2>
+
+    <dl>
+        <dt><b>adv_input_[string]()</b></dt>
+        <dd>Functions of this format will be called after each regulat user
+        input. It should not return anything.<br>
+        Example: Define adv_input_help() to handle a help command.</dd>
+    </dl>
+    <dl>
+        <dt><b>adv_onTile(string)</b></dt>
+        <dd>This functions will be called each time the player moves one tile.
+        The char on the tile will be given as a string parameter.<br>
+        This function should not return anything.</dd>
+    </dl>
+    <dl>
+        <dt><b>adv_obstacle(string)</b></dt>
+        <dd>This function will be called each time the player wants to move one
+        tile. The char on the tile will be given as a string parameter.<br>
+        If this function returns true the player won't move.</dd>
+    </dl>
+    <dl>
+        <dt><b>adv_eachTime()</b></dt>
+        <dd>This function will be called in the beginning of each frame.<br>
+        A frame is built of this function, a regular user input and the input
+        handling.</dd>
+    </dl>
+
+</body>
+</html>
