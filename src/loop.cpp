@@ -78,7 +78,7 @@ void Loop::run(const std::string& filename)
 void Loop::input_()
 {
     std::cout << INPUT_PREFIX;
-    std::cin >> inputString_;
+    std::getline(std::cin,inputString_);
 }
 
 void Loop::logic_()
@@ -227,7 +227,7 @@ int Loop::input_(lua_State* L)
 {
     std::cout   << INPUT_PREFIX;
     std::string s;
-    std::cin    >> s;
+    std::getline(std::cin,s);
     lua_pushstring(L,s.c_str());
     return 1;
 }
