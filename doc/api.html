@@ -54,6 +54,9 @@
         <dt><b>adv_random_ranged(ll,uu)</b></dt>
         <dd>Takes two arguments, a lower limit and an upper limit as
         number values. It returns a random number between those values.</dd>
+        <dt><b>adv_setInputPrefix(string)</b></dt>
+        <dd>Sets the input prefix to the given string.<br>
+        Returns nothing.</dd>
     </dl>
 
     <h2>User Defined Functions</h2>
@@ -63,27 +66,19 @@
         <dd>Functions of this format will be called after each regulat user
         input. It should not return anything.<br>
         Example: Define adv_input_help() to handle a help command.</dd>
-    </dl>
-    <dl>
         <dt><b>adv_input_(string)</b></dt>
         <dd>This function will be called if there is no
         <b>adv_input[string]()</b> for the user's input.
         This allows additional characters and spaces in the commands.<br>
         It should return true if the input is handled here.</dd>
-    </dl>
-    <dl>
         <dt><b>adv_onTile(string)</b></dt>
         <dd>This functions will be called each time the player moves one tile.
         The char on the tile will be given as a string parameter.<br>
         This function should not return anything.</dd>
-    </dl>
-    <dl>
         <dt><b>adv_obstacle(string)</b></dt>
         <dd>This function will be called each time the player wants to move one
         tile. The char on the tile will be given as a string parameter.<br>
         If this function returns true the player won't move.</dd>
-    </dl>
-    <dl>
         <dt><b>adv_eachTime()</b></dt>
         <dd>This function will be called in the beginning of each frame.<br>
         A frame is built of this function, a regular user input and the input

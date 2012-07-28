@@ -7,7 +7,7 @@
  * CMAKE >= 2.8
 
 == How to install ==
- * cp <this directory>
+ * cd <this directory>
  * mkdir bin && cd bin
  * cmake ../src
  * make

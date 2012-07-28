@@ -33,6 +33,7 @@ const char LUA_GOEAST[]         = "adv_goEast";
 const char LUA_GOWEST[]         = "adv_goWest";
 const char LUA_DOINPUT[]        = "adv_input";
 const char LUA_RANDOMRANGED[]   = "adv_random_ranged";
+const char LUA_SETINPUTPREFIX[] = "adv_setInputPrefix";
 
 inline std::string LUA_INPUT(const std::string s)
 { return std::string("adv_input_")+s; }

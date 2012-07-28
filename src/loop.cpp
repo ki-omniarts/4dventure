@@ -47,6 +47,7 @@ void Loop::run(const std::string& filename)
     lua_register(L_.get(),LUA_GOWEST,goWest_);
     lua_register(L_.get(),LUA_DOINPUT,input_);
     lua_register(L_.get(),LUA_RANDOMRANGED,random_ranged);
+    lua_register(L_.get(),LUA_SETINPUTPREFIX,setInputPrefix_);
 
     if (luaL_dofile(L_.get(),filename.c_str()) == 1)
     {
@@ -77,7 +78,7 @@ void Loop::run(const std::string& filename)
 
 void Loop::input_()
 {
-    std::cout << INPUT_PREFIX;
+    std::cout << inputPrefix_;
     std::getline(std::cin,inputString_);
 }
 
@@ -225,9 +226,18 @@ int Loop::goWest_(lua_State* L)
 
 int Loop::input_(lua_State* L)
 {
-    std::cout   << INPUT_PREFIX;
+    std::cout   << Loop::loop().inputPrefix_;
     std::string s;
     std::getline(std::cin,s);
     lua_pushstring(L,s.c_str());
     return 1;
+}
+
+int Loop::setInputPrefix_(lua_State* L)
+{
+    int args = lua_gettop(L);
+    if (args > 0)
+        if (lua_isstring(L,-args))
+            Loop::loop().inputPrefix_ = lua_tostring(L,-args);
+    return 0;
 }

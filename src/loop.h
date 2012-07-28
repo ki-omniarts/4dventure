@@ -42,6 +42,7 @@ class Loop
     std::string inputString_    = "";
     bool running_               = true;
     Point playerPos_            = Point(0,0);
+    std::string inputPrefix_    = INPUT_PREFIX;
 
     // LUA
     std::shared_ptr<lua_State>L_= 
@@ -57,6 +58,7 @@ class Loop
     static int tileEvent_(lua_State* L);
     static bool obstacle_(lua_State* L,char c);
     static int input_(lua_State* L);
+    static int setInputPrefix_(lua_State* L);
 
     enum direction { NORTH,EAST,SOUTH,WEST };
     static bool walk_( direction dir );
