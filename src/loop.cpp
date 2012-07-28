@@ -52,6 +52,7 @@ void Loop::run(const std::string& filename)
     if (luaL_dofile(L_.get(),filename.c_str()) == 1)
     {
         std::cerr << filename << " is no valid LUA file." << std::endl;
+        std::cerr << lua_tostring(L_.get(),-1) << std::endl;
         return;
     }
     
