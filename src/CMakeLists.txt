@@ -108,9 +108,11 @@ add_executable( ${PROJECT_NAME}
     ${4dventureSRC}
 )
 
+if( NOT $STANDALONE )
 target_link_libraries( ${PROJECT_NAME}
     ${LUA_LIBRARIES}
 )
+endif( NOT $STANDALONE )
 
 # Install
 #--------
