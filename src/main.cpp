@@ -1,6 +1,6 @@
 /*
  * main.cpp
- * This file is part of <program name>
+ * This file is part of 4dventure
  *
  * Copyright (C) 2012 - KiNaudiz
  *
