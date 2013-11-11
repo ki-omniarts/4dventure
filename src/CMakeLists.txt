@@ -58,7 +58,7 @@ SET ( PLATTFORM
 
 OPTION( STANDALONE
     "Set this to build a standalone version with lua built in."
-    on
+    off
 )
 
 # Requirements
