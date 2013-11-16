@@ -43,6 +43,10 @@ function adv_input_w()
     adv_goWest()
 end
 
+function adv_input_ls()
+    print ("This isn't your shell, you know?")
+end
+
 function adv_obstacle(string)
     if string == "^" then
         print ("A mountain blocks your way.")
