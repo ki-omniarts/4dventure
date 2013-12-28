@@ -28,4 +28,4 @@ http://ki-omniarts.de/hg/4dventure/
 where there will always be the newest version online for you.
 
 If you like you can also check out our github mirror at
-https://github.com/KiNaudiz/4dventure.
+https://github.com/ki-omniarts/4dventure.
