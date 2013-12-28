@@ -18,6 +18,7 @@
  * along with 4dventure. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <stdexcept>
 #include "loop.h"
 
 Loop& Loop::loop()
@@ -56,10 +57,9 @@ void Loop::run(const std::string& filename)
         return;
     }
     
-    if (!map_->valid())
+    if (!map_->empty())
     {
-        std::cerr << "No valid Map specified." << std::endl;
-        return;
+        throw std::runtime_error{"Empty Map"};
     }
 
     if (playerPos_ == Point(0,0))

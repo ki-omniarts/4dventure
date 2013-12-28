@@ -30,7 +30,6 @@
 class Map 
 {
     typedef std::vector<std::vector<Point>> Tiles;
-    bool valid_ = false; // TODO: exception?
 
     struct pImpl
     {
@@ -56,11 +55,15 @@ class Map
         virtual ~Map() noexcept;
 
         // Getter
-        bool valid() { return valid_; }
-        const Point startpoint();
-        bool exists(const Point& p);
-        tile_id_t symbol(const Point& p) 
+        const Point startpoint() const;
+        bool exists(const Point& p) const;
+        tile_id_t symbol(const Point& p) const
             { return data_->tiles[p.y()][p.x()].tile(); }
+        bool empty() const // XXX: is a map with only $-tiles empty?
+            { return data_->symbols.empty(); }
+
+        // XXX: deprecated, will be removed soon
+        bool valid() __attribute__ ((deprecated)) { return empty(); }
 
         friend void swap(Map& lhs,Map& rhs)
         {

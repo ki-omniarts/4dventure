@@ -38,10 +38,10 @@ const char INPUT_PREFIX[] = "\t> ";
 
 class Loop
 {
-    std::unique_ptr<Map> map_   = std::unique_ptr<Map>(new Map());
+    std::unique_ptr<Map> map_   = std::unique_ptr<Map>{new Map{}};
     std::string inputString_    = "";
     bool running_               = true;
-    Point playerPos_            = Point(0,0);
+    Point playerPos_            = Point{0,0};
     std::string inputPrefix_    = INPUT_PREFIX;
 
     // LUA
@@ -79,7 +79,7 @@ class Loop
         static Loop& loop();
 
         // FUNCTIONS
-        void run(const std::string& filename);
+        void run(const std::string& filename); // throws std::runtime_error
 
 };
 

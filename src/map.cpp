@@ -107,10 +107,9 @@ void Map::generateTiles_(const std::string& mapstring)
     }
     data_->tiles    = std::move(tiles);
     data_->symbols  = std::move(symbols);
-    valid_          = true;
 }
 
-const Point Map::startpoint()
+const Point Map::startpoint() const
 {
     Point p = Point(0,0);
 
@@ -123,7 +122,7 @@ const Point Map::startpoint()
     return p;
 }
 
-bool Map::exists(const Point& p)
+bool Map::exists(const Point& p) const
 {
     return (  ( p.y() < data_->tiles.size() ) 
            && ( p.x() < data_->tiles[p.y()].size() ) );
