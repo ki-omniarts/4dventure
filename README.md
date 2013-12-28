@@ -56,9 +56,9 @@ https://github.com/ki-omniarts/4dventure.
 
 You might consider using some of the following options:
 
-    * `-DSTANDALONE=1` to build without Lua dependencies
-    * `-DLIBRARY=0` to turn of library building
-    * `-DBUILD_SHARED_LIBS=1` to build shared libs instead of static libs.
+* `-DSTANDALONE=1` to build without Lua dependencies
+* `-DLIBRARY=0` to turn of library building
+* `-DBUILD_SHARED_LIBS=1` to build shared libs instead of static libs.
 
 Notice that static libs will be installed in your local lib-Folder.
 
