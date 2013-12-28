@@ -18,14 +18,14 @@
  * along with 4dventure. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ADVENTURE_LOOP_H
-#define ADVENTURE_LOOP_H
+#ifndef ADVENTURE_LOOP_HPP
+#define ADVENTURE_LOOP_HPP
 
-#include "map.h"
-#include "commands.h"
-#include "messages.h"
-#include "lua_vars.h"
-#include "random.h"
+#include "map.hpp"
+#include "commands.hpp"
+#include "messages.hpp"
+#include "lua_vars.hpp"
+#include "random.hpp"
 
 #include <memory>
 #include <iostream>
