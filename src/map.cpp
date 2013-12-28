@@ -20,7 +20,7 @@
 
 #include "map.h"
 
-const std::vector<char> Map::reservedSymbols_   = {'$'};
+const std::vector<tile_id_t> Map::reservedSymbols_   = {'$'};
 
 Map::~Map() {}
 
@@ -58,7 +58,7 @@ Map& Map::operator=(Map&& other)
 void Map::generateTiles_(const std::string& mapstring)
 {
     Map::Tiles tiles;
-    std::vector<char> symbols = {};
+    std::vector<tile_id_t> symbols = {};
     size_t current_line = 0;
     size_t current_col  = 0;
     tiles.push_back(std::vector<Point>());
@@ -76,24 +76,28 @@ void Map::generateTiles_(const std::string& mapstring)
             // is there a reserved char?
             for (size_t s = 0; s != reservedSymbols_.size(); s++)
             {
-                if ( mapstring[i] == reservedSymbols_[s] )
+                if  (
+                        static_cast<tile_id_t>(mapstring[i]) 
+                        == reservedSymbols_[s] 
+                    )
                     return;
             }
             tiles[current_line].push_back
-                    (Point(current_col,current_line,mapstring[i]));
+                (Point(current_col,current_line,
+                    static_cast<tile_id_t>(mapstring[i])));
             // add the char to the list of symbols
             {
                 bool not_found = true;
                 for (size_t s = 0; s != symbols.size(); s++)
                 {
-                    if ( mapstring[i] == symbols[s] )
+                    if ( static_cast<tile_id_t>(mapstring[i]) == symbols[s] )
                     {
                         not_found = false;
                         break;
                     }
                 }
                 if (not_found)
-                    symbols.push_back(mapstring[i]);
+                    symbols.push_back(static_cast<tile_id_t>(mapstring[i]));
             }
         }
         if ( mapstring[i] != '\n' )

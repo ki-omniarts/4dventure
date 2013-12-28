@@ -35,8 +35,8 @@ class Map
     Tiles tiles_ = {};
 
     // Symbols
-    std::vector<char> symbols_  = {};
-    static const std::vector<char> reservedSymbols_; 
+    std::vector<tile_id_t> symbols_  = {};
+    static const std::vector<tile_id_t> reservedSymbols_; 
 
     // Functions
     void generateTiles_(const std::string& mapstring);
