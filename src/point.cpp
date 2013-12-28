@@ -20,7 +20,7 @@
 
 #include "point.h"
 
-Point::Point(unsigned int x, unsigned int y, char tile)
+Point::Point(unsigned int x, unsigned int y, tile_id_t tile)
     : x_{x}, y_{y}, tile_{tile}
 {}
 
