@@ -52,15 +52,15 @@ void Loop::run(const std::string& filename)
 
     if (luaL_dofile(L_.get(),filename.c_str()) == 1)
     {
-        std::cerr << filename << " is no valid LUA file." << std::endl;
-        std::cerr << lua_tostring(L_.get(),-1) << std::endl;
-        return;
+        std::string tmp{""};
+        tmp += " is no valid LUA file.";
+        tmp += lua_tostring(L_.get(),-1);
+
+        throw std::runtime_error{tmp};
     }
     
     if (!map_->empty())
-    {
         throw std::runtime_error{"Empty Map"};
-    }
 
     if (playerPos_ == Point(0,0))
         playerPos_ = map_->startpoint();
@@ -170,7 +170,7 @@ bool Loop::obstacle_(lua_State* L,char c)
 
 bool Loop::walk_(direction dir)
 {
-    Point p(0,0);
+    Point p{0,0};
     uint currentx = Loop::loop().playerPos_.x();
     uint currenty = Loop::loop().playerPos_.y();
 
@@ -237,7 +237,7 @@ int Loop::input_(lua_State* L)
 
 int Loop::setInputPrefix_(lua_State* L)
 {
-    int args = lua_gettop(L);
+    int args{lua_gettop(L)};
     if (args > 0)
         if (lua_isstring(L,-args))
             Loop::loop().inputPrefix_ = lua_tostring(L,-args);
