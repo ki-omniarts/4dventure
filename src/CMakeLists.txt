@@ -3,9 +3,13 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 # about the project
 #------------------
 project( 4dventure )
-SET( 4DVENTURE_VERSION_MAJOR "0" )
+SET( 4DVENTURE_VERSION_MAJOR "1" )
 SET( 4DVENTURE_VERSION_MINOR "1" )
 SET( 4DVENTURE_VERSION_PATCH "0" )
+
+include(GNUInstallDirs)
+
+SET( LIBRARY_NAME c4dventure )
 
 # Paths
 #------
@@ -61,6 +65,11 @@ OPTION( STANDALONE
     off
 )
 
+OPTION( LIBRARY
+    "Set this to build a shared or static library depending on BUILD_SHARED_LIBS."
+    on
+)
+
 # Requirements
 #-------------
 if( NOT ${STANDALONE} )
@@ -83,10 +92,13 @@ endif( NOT ${STANDALONE} )
 
 #Files
 #-----
-SET (4dventureSRC
+SET (4dventureLibSRC
     ${CMAKE_CURRENT_SOURCE_DIR}/loop.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/point.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/map.cpp
+)
+SET (4dventureSRC
+    ${4dventureLibSRC}
     ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
 )
 if( ${STANDALONE} )
@@ -107,13 +119,30 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 add_executable( ${PROJECT_NAME}
     ${4dventureSRC}
 )
+if ( ${LIBRARY} )
+    add_library( ${LIBRARY_NAME}
+        ${4dventureLibSRC} )
+endif ( ${LIBRARY} )
 
-if( NOT $STANDALONE )
+if( NOT ${STANDALONE} )
 target_link_libraries( ${PROJECT_NAME}
     ${LUA_LIBRARIES}
 )
-endif( NOT $STANDALONE )
+if ( ${LIBRARY} )
+    target_link_libraries( ${LIBRARY_NAME}
+        ${LUA_LIBRARIES}
+    )
+endif ( ${LIBRARY} )
+endif( NOT ${STANDALONE} )
 
 # Install
 #--------
 install (PROGRAMS ${CMAKE_BINARY_DIR}/${PROJECT_NAME} DESTINATION bin)
+if( ${LIBRARY} )
+    install(DIRECTORY src/ DESTINATION include/4dventure
+        FILES_MATCHING PATTERN "*.h")
+    if( ${BUILD_SHARED_LIBS} )
+        install(TARGETS ${LIBRARY_NAME} LIBRARY DESTINATION
+            ${CMAKE_INSTALL_LIBDIR})
+    endif( ${BUILD_SHARED_LIBS} )
+endif( ${LIBRARY} )

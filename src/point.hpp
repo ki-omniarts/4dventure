@@ -22,31 +22,46 @@
 #define ADVENTURE_POINT_HPP
 
 #include <utility>
+#include <memory>
+
+typedef unsigned int tile_id_t;
 
 class Point
 {
-    unsigned int x_     = 0;
-    unsigned int y_     = 0;
-    char      tile_     = '$';
+    struct pImpl
+    {
+        pImpl(unsigned int,unsigned int,tile_id_t);
+        unsigned int x = 0;
+        unsigned int y = 0;
+        // tile id
+        tile_id_t tile = '$';
+    };
+
+    std::unique_ptr<pImpl> data_;
 
     public:
-        Point();
-        Point(unsigned int x, unsigned int y, char tile = '$');
+        explicit Point();
+        Point(unsigned int x, unsigned int y, tile_id_t tile = '$');
         Point(const Point& other);
         Point(Point&& other);
         Point& operator=(const Point& other);
         Point& operator=(Point&& other);
-        virtual ~Point();
+        virtual ~Point() noexcept;
 
-        unsigned int x()  const { return x_; }
-        unsigned int y()  const { return y_; }
-        char tile()       const { return tile_; } 
+        unsigned int x() const { return data_->x; }
+        unsigned int y() const { return data_->y; }
+        tile_id_t tile() const { return data_->tile; } 
+
+        friend void swap(Point& lhs,Point& rhs) noexcept
+        {
+            std::swap(lhs.data_,rhs.data_);
+        }
 };
 
 inline bool operator==(const Point& lhs, const Point& rhs)
 {
     if ( lhs.x() == rhs.x() && lhs.y() == rhs.y()
-        && lhs.tile() == rhs.tile() )
+        && lhs.tile() == rhs.tile() ) // XXX remove tile comparason?
         return true;
     return false;
 }
