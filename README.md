@@ -29,3 +29,31 @@ where there will always be the newest version online for you.
 
 If you like you can also check out our github mirror at
 https://github.com/ki-omniarts/4dventure.
+
+## INSTALLATION ##
+
+### you need ###
+
+ * gcc >= 4.7
+ * glibc++
+ * Lua 5.0 or 5.1 (otherwise you'll have to use the STANDALONE-Flag)
+ * CMAKE >= 2.8
+
+### How to install ###
+
+    $ cd <this directory>
+    $ mkdir bin && cd bin
+
+If you have got Lua 5.0 or Lua 5.1 installed:
+
+    $ cmake ../src
+    $ make
+
+Otherwise: 
+
+    $ cmake ../src -DSTANDALONE=1
+    $ make
+
+To install globally:
+
+    $ sudo make install
