@@ -29,7 +29,7 @@ Loop& Loop::loop()
 Loop::Loop()
 {}
 
-Loop::~Loop() {}
+Loop::~Loop() noexcept {}
 
 void Loop::run(const std::string& filename)
 {
@@ -144,7 +144,8 @@ int Loop::tileEvent_(lua_State*)//TODO
     {
         lua_pushstring(Loop::loop().L_.get(),
             (std::string("")+
-            (Loop::loop().map_->symbol(Loop::loop().playerPos_))).c_str());
+            static_cast<char>(
+                (Loop::loop().map_->symbol(Loop::loop().playerPos_)))).c_str());
         lua_call(Loop::loop().L_.get(),1,0);
     }
     

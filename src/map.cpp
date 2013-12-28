@@ -35,7 +35,7 @@ Map::Map(const std::string& mapstring)
 }
 
 Map::Map(const Map& other)
-    : data_{other.data_}
+    : data_{new pImpl{*other.data_}}
 {}
 
 Map& Map::operator=(const Map& other)
@@ -106,7 +106,7 @@ void Map::generateTiles_(const std::string& mapstring)
             current_col++;
     }
     data_->tiles    = std::move(tiles);
-    data_->symbols_ = std::move(symbols);
+    data_->symbols  = std::move(symbols);
     valid_          = true;
 }
 

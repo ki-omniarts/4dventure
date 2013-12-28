@@ -46,7 +46,7 @@ class Loop
 
     // LUA
     std::shared_ptr<lua_State>L_= 
-        std::shared_ptr<lua_State>(lua_open(),lua_close);
+        std::shared_ptr<lua_State>{lua_open(),lua_close};
     static int setMap_(lua_State* L);
     static int setPlayerPos_(lua_State* L);
     static int getPlayerPos_(lua_State* L);
@@ -74,7 +74,7 @@ class Loop
     Loop();
 
     public:
-        virtual ~Loop();
+        virtual ~Loop() noexcept;
         
         static Loop& loop();
 
