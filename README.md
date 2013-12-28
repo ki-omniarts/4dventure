@@ -1,4 +1,4 @@
-# 4dventure v1.0 #
+# 4dventure v1.1.0 #
 
 ## Are you ready for an 4dventure? ##
 
@@ -30,6 +30,15 @@ where there will always be the newest version online for you.
 If you like you can also check out our github mirror at
 https://github.com/ki-omniarts/4dventure.
 
+## Features ##
+
+### Upcoming ###
+
+ * Ingame Sounds
+ * Some Lua libraries that will make your life easier
+ * More Examples
+ * Add an argument to `adv_input_INPUT` to parse the rest of the input string
+
 ## INSTALLATION ##
 
 ### you need ###
@@ -43,17 +52,27 @@ https://github.com/ki-omniarts/4dventure.
 
     $ cd <this directory>
     $ mkdir bin && cd bin
+    $ cmake ../src [OPTIONS]
 
-If you have got Lua 5.0 or Lua 5.1 installed:
+You might consider using some of the following options:
 
-    $ cmake ../src
-    $ make
+* `-DSTANDALONE=1` to build without Lua dependencies
+* `-DLIBRARY=0` to turn of library building
+* `-DBUILD_SHARED_LIBS=1` to build shared libs instead of static libs.
 
-Otherwise: 
+Notice that static libs will be installed in your local lib-Folder.
 
-    $ cmake ../src -DSTANDALONE=1
+To build your files:
+
     $ make
 
 To install globally:
 
     $ sudo make install
+
+## Changelog ##
+
+### 1.1.0 ###
+
+* Cleaned up the code
+* Added Library support, see __Installation__

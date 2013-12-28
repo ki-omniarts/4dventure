@@ -27,34 +27,48 @@
 #include <string>
 #include <vector>
 
-class Map
+class Map 
 {
     typedef std::vector<std::vector<Point>> Tiles;
-    bool valid_ = false;
 
-    Tiles tiles_ = {};
+    struct pImpl
+    {
+        Tiles tiles = {};
+        std::vector<tile_id_t> symbols = {};
+    };
+
+    std::unique_ptr<pImpl> data_;
 
     // Symbols
-    std::vector<char> symbols_  = {};
-    static const std::vector<char> reservedSymbols_; 
+    static const std::vector<tile_id_t> reservedSymbols_; 
 
     // Functions
     void generateTiles_(const std::string& mapstring);
 
     public:
-        Map() = default;
+        Map();
         Map(const std::string& mapstring);
         Map(const Map& other);
         Map& operator=(const Map& other);
         Map(Map&& other);
         Map& operator=(Map&& other);
-        virtual ~Map();
+        virtual ~Map() noexcept;
 
         // Getter
-        bool valid() { return valid_; }
-        const Point startpoint();
-        bool exists(const Point& p);
-        char symbol(const Point& p) { return tiles_[p.y()][p.x()].tile(); }
+        const Point startpoint() const;
+        bool exists(const Point& p) const;
+        tile_id_t symbol(const Point& p) const
+            { return data_->tiles[p.y()][p.x()].tile(); }
+        bool empty() const // XXX: is a map with only $-tiles empty?
+            { return data_->symbols.empty(); }
+
+        // XXX: deprecated, will be removed soon
+        bool valid() __attribute__ ((deprecated)) { return empty(); }
+
+        friend void swap(Map& lhs,Map& rhs)
+        {
+            std::swap(lhs.data_,rhs.data_);
+        }
 };
 
 #endif

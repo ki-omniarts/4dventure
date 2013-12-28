@@ -18,6 +18,7 @@
  * along with 4dventure. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <stdexcept>
 #include "loop.h"
 
 Loop& Loop::loop()
@@ -29,7 +30,7 @@ Loop& Loop::loop()
 Loop::Loop()
 {}
 
-Loop::~Loop() {}
+Loop::~Loop() noexcept {}
 
 void Loop::run(const std::string& filename)
 {
@@ -56,10 +57,9 @@ void Loop::run(const std::string& filename)
         return;
     }
     
-    if (!map_->valid())
+    if (!map_->empty())
     {
-        std::cerr << "No valid Map specified." << std::endl;
-        return;
+        throw std::runtime_error{"Empty Map"};
     }
 
     if (playerPos_ == Point(0,0))
@@ -144,7 +144,8 @@ int Loop::tileEvent_(lua_State*)//TODO
     {
         lua_pushstring(Loop::loop().L_.get(),
             (std::string("")+
-            (Loop::loop().map_->symbol(Loop::loop().playerPos_))).c_str());
+            static_cast<char>(
+                (Loop::loop().map_->symbol(Loop::loop().playerPos_)))).c_str());
         lua_call(Loop::loop().L_.get(),1,0);
     }
     

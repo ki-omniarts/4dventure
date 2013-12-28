@@ -20,45 +20,47 @@
 
 #include "map.h"
 
-const std::vector<char> Map::reservedSymbols_   = {'$'};
+const std::vector<tile_id_t> Map::reservedSymbols_   = {'$'};
 
-Map::~Map() {}
+Map::~Map() noexcept {}
+
+Map::Map()
+    : data_{new pImpl{}}
+{}
 
 Map::Map(const std::string& mapstring)
+    : data_{new pImpl{}}
 {
     generateTiles_(mapstring);
 }
 
 Map::Map(const Map& other)
-    : tiles_(other.tiles_)
-    , symbols_(other.symbols_)
+    : data_{new pImpl{*other.data_}}
 {}
 
 Map& Map::operator=(const Map& other)
 {
-    if ( this == &other ) return *this;
-    tiles_ = other.tiles_;
-    symbols_ = other.symbols_;
+    auto tmp = other;
+    swap(*this,tmp);
     return *this;
 }
 
 Map::Map(Map&& other)
-    : tiles_(std::move(other.tiles_))
-    , symbols_(std::move(other.symbols_))
-{}
+    : data_{nullptr}
+{
+    swap(*this,other);
+}
 
 Map& Map::operator=(Map&& other)
 {
-    if ( this == &other ) return *this;
-    tiles_ = std::move(other.tiles_);
-    symbols_ = std::move(other.symbols_);
+    swap(*this,other);
     return *this;
 }
 
 void Map::generateTiles_(const std::string& mapstring)
 {
     Map::Tiles tiles;
-    std::vector<char> symbols = {};
+    std::vector<tile_id_t> symbols = {};
     size_t current_line = 0;
     size_t current_col  = 0;
     tiles.push_back(std::vector<Point>());
@@ -76,39 +78,42 @@ void Map::generateTiles_(const std::string& mapstring)
             // is there a reserved char?
             for (size_t s = 0; s != reservedSymbols_.size(); s++)
             {
-                if ( mapstring[i] == reservedSymbols_[s] )
+                if  (
+                        static_cast<tile_id_t>(mapstring[i]) 
+                        == reservedSymbols_[s] 
+                    )
                     return;
             }
             tiles[current_line].push_back
-                    (Point(current_col,current_line,mapstring[i]));
+                (Point(current_col,current_line,
+                    static_cast<tile_id_t>(mapstring[i])));
             // add the char to the list of symbols
             {
                 bool not_found = true;
                 for (size_t s = 0; s != symbols.size(); s++)
                 {
-                    if ( mapstring[i] == symbols[s] )
+                    if ( static_cast<tile_id_t>(mapstring[i]) == symbols[s] )
                     {
                         not_found = false;
                         break;
                     }
                 }
                 if (not_found)
-                    symbols.push_back(mapstring[i]);
+                    symbols.push_back(static_cast<tile_id_t>(mapstring[i]));
             }
         }
         if ( mapstring[i] != '\n' )
             current_col++;
     }
-    tiles_      = std::move(tiles);
-    symbols_    = std::move(symbols);
-    valid_      = true;
+    data_->tiles    = std::move(tiles);
+    data_->symbols  = std::move(symbols);
 }
 
-const Point Map::startpoint()
+const Point Map::startpoint() const
 {
     Point p = Point(0,0);
 
-    for(auto y : tiles_)
+    for(auto y : data_->tiles)
         for(auto x : y)
         {
             if ( ( x.tile() == 'S' ) && ( p == Point(0,0) ) )
@@ -117,7 +122,8 @@ const Point Map::startpoint()
     return p;
 }
 
-bool Map::exists(const Point& p)
+bool Map::exists(const Point& p) const
 {
-    return ( ( p.y() < tiles_.size() ) && ( p.x() < tiles_[p.y()].size() ) );
+    return (  ( p.y() < data_->tiles.size() ) 
+           && ( p.x() < data_->tiles[p.y()].size() ) );
 }
