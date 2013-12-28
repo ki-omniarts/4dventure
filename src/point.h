@@ -41,7 +41,7 @@ class Point
 
     public:
         explicit Point();
-        explicit Point(unsigned int x, unsigned int y, tile_id_t tile = '$');
+        Point(unsigned int x, unsigned int y, tile_id_t tile = '$');
         Point(const Point& other);
         Point(Point&& other);
         Point& operator=(const Point& other);

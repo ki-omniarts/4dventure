@@ -27,34 +27,45 @@
 #include <string>
 #include <vector>
 
-class Map // TODO: swap, pImpl?
+class Map 
 {
     typedef std::vector<std::vector<Point>> Tiles;
     bool valid_ = false; // TODO: exception?
 
-    Tiles tiles_ = {};
+    struct pImpl
+    {
+        Tiles tiles = {};
+        std::vector<tile_id_t> symbols = {};
+    };
+
+    std::unique_ptr<pImpl> data_;
 
     // Symbols
-    std::vector<tile_id_t> symbols_  = {};
     static const std::vector<tile_id_t> reservedSymbols_; 
 
     // Functions
     void generateTiles_(const std::string& mapstring);
 
     public:
-        Map() = default;
+        Map();
         Map(const std::string& mapstring);
         Map(const Map& other);
         Map& operator=(const Map& other);
         Map(Map&& other);
         Map& operator=(Map&& other);
-        virtual ~Map();
+        virtual ~Map() noexcept;
 
         // Getter
         bool valid() { return valid_; }
         const Point startpoint();
         bool exists(const Point& p);
-        tile_id_t symbol(const Point& p) { return tiles_[p.y()][p.x()].tile(); }
+        tile_id_t symbol(const Point& p) 
+            { return data_->tiles[p.y()][p.x()].tile(); }
+
+        friend void swap(Map& lhs,Map& rhs)
+        {
+            std::swap(lhs.data_,rhs.data_);
+        }
 };
 
 #endif

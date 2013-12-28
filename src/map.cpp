@@ -22,36 +22,38 @@
 
 const std::vector<tile_id_t> Map::reservedSymbols_   = {'$'};
 
-Map::~Map() {}
+Map::~Map() noexcept {}
+
+Map::Map()
+    : data_{new pImpl{}}
+{}
 
 Map::Map(const std::string& mapstring)
+    : data_{new pImpl{}}
 {
     generateTiles_(mapstring);
 }
 
 Map::Map(const Map& other)
-    : tiles_{other.tiles_}
-    , symbols_{other.symbols_}
+    : data_{other.data_}
 {}
 
 Map& Map::operator=(const Map& other)
 {
-    if ( this == &other ) return *this;
-    tiles_ = other.tiles_;
-    symbols_ = other.symbols_;
+    auto tmp = other;
+    swap(*this,tmp);
     return *this;
 }
 
 Map::Map(Map&& other)
-    : tiles_{std::move(other.tiles_)}
-    , symbols_{std::move(other.symbols_)}
-{}
+    : data_{nullptr}
+{
+    swap(*this,other);
+}
 
 Map& Map::operator=(Map&& other)
 {
-    if ( this == &other ) return *this;
-    tiles_ = std::move(other.tiles_);
-    symbols_ = std::move(other.symbols_);
+    swap(*this,other);
     return *this;
 }
 
@@ -103,16 +105,16 @@ void Map::generateTiles_(const std::string& mapstring)
         if ( mapstring[i] != '\n' )
             current_col++;
     }
-    tiles_      = std::move(tiles);
-    symbols_    = std::move(symbols);
-    valid_      = true;
+    data_->tiles    = std::move(tiles);
+    data_->symbols_ = std::move(symbols);
+    valid_          = true;
 }
 
 const Point Map::startpoint()
 {
     Point p = Point(0,0);
 
-    for(auto y : tiles_)
+    for(auto y : data_->tiles)
         for(auto x : y)
         {
             if ( ( x.tile() == 'S' ) && ( p == Point(0,0) ) )
@@ -123,5 +125,6 @@ const Point Map::startpoint()
 
 bool Map::exists(const Point& p)
 {
-    return ( ( p.y() < tiles_.size() ) && ( p.x() < tiles_[p.y()].size() ) );
+    return (  ( p.y() < data_->tiles.size() ) 
+           && ( p.x() < data_->tiles[p.y()].size() ) );
 }
