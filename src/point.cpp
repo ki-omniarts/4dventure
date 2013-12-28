@@ -21,11 +21,11 @@
 #include "point.h"
 
 Point::Point(unsigned int x, unsigned int y, char tile)
-    : x_(x), y_(y), tile_(tile)
+    : x_{x}, y_{y}, tile_{tile}
 {}
 
 Point::Point()
-    : Point(0,0)
+    : Point{0,0}
 {}
 
 Point::Point(const Point& other)
@@ -40,7 +40,7 @@ Point::Point(Point&& other)
     , tile_(std::move(other.tile_))
 {}
 
-Point::~Point()
+Point::~Point() noexcept
 {}
 
 Point& Point::operator=(const Point& other)
