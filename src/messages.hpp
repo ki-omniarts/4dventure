@@ -18,8 +18,8 @@
  * along with 4dventure. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ADVENTURE_MESSAGES_H
-#define ADVENTURE_MESSAGES_H
+#ifndef ADVENTURE_MESSAGES_HPP
+#define ADVENTURE_MESSAGES_HPP
 
 const char MESSAGE_COMMAND_NOT_FOUND[]  = "Command not found.";
 

@@ -18,8 +18,8 @@
  * along with 4dventure. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ADVENTURE_RANDOM_H
-#define ADVENTURE_RANDOM_H
+#ifndef ADVENTURE_RANDOM_HPP
+#define ADVENTURE_RANDOM_HPP
 
 #include <random>
 

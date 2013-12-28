@@ -18,7 +18,7 @@
  * along with 4dventure. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "point.h"
+#include "point.hpp"
 
 Point::Point(unsigned int x, unsigned int y, tile_id_t tile)
     : data_{new pImpl{x,y,tile}}
