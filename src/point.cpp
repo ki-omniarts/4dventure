@@ -21,7 +21,7 @@
 #include "point.h"
 
 Point::Point(unsigned int x, unsigned int y, tile_id_t tile)
-    : data_{new Point_pimpl{x,y,tile}}
+    : data_{new pImpl{x,y,tile}}
 {}
 
 Point::Point()
@@ -29,7 +29,7 @@ Point::Point()
 {}
 
 Point::Point(const Point& other)
-    : data_{new Point_pimpl{*other.data_}}
+    : data_{new pImpl{*other.data_}}
 {}
 
 Point::Point(Point&& other)
@@ -54,6 +54,6 @@ Point& Point::operator=(Point&& other)
     return *this;
 }
     
-Point::Point_pimpl::Point_pimpl(unsigned int xx,unsigned int yy,tile_id_t tt)
+Point::pImpl::pImpl(unsigned int xx,unsigned int yy,tile_id_t tt)
     : x(xx),y(yy),tile(tt)
 {}

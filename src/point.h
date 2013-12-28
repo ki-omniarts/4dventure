@@ -28,16 +28,16 @@ typedef unsigned int tile_id_t;
 
 class Point
 {
-    struct Point_pimpl
+    struct pImpl
     {
-        Point_pimpl(unsigned int,unsigned int,tile_id_t);
+        pImpl(unsigned int,unsigned int,tile_id_t);
         unsigned int x = 0;
         unsigned int y = 0;
         // tile id
         tile_id_t tile = '$';
     };
 
-    std::unique_ptr<Point_pimpl> data_;
+    std::unique_ptr<pImpl> data_;
 
     public:
         explicit Point();
