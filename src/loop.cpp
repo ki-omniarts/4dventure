@@ -18,7 +18,7 @@
  * along with 4dventure. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "loop.h"
+#include "loop.hpp"
 
 Loop& Loop::loop()
 {

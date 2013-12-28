@@ -18,8 +18,8 @@
  * along with 4dventure. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ADVENTURE_POINT_H
-#define ADVENTURE_POINT_H
+#ifndef ADVENTURE_POINT_HPP
+#define ADVENTURE_POINT_HPP
 
 #include <utility>
 

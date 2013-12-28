@@ -18,8 +18,8 @@
  * along with 4dventure. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ADVENTUE_LUA_VARS_H
-#define ADVENTUE_LUA_VARS_H
+#ifndef ADVENTUE_LUA_VARS_HPP
+#define ADVENTUE_LUA_VARS_HPP
 
 #include <string>
 

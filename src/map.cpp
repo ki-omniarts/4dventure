@@ -18,7 +18,7 @@
  * along with 4dventure. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "map.h"
+#include "map.hpp"
 
 const std::vector<char> Map::reservedSymbols_   = {'$'};
 

@@ -18,10 +18,10 @@
  * along with 4dventure. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ADVENTURE_MAP_H
-#define ADVENTURE_MAP_H
+#ifndef ADVENTURE_MAP_HPP
+#define ADVENTURE_MAP_HPP
 
-#include "point.h"
+#include "point.hpp"
 
 #include <memory>
 #include <string>

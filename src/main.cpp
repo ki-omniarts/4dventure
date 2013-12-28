@@ -18,7 +18,7 @@
  * along with <program name>. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "loop.h"
+#include "loop.hpp"
 
 int main(int argc,char* argv[])
 {
