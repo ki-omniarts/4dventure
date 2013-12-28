@@ -27,10 +27,10 @@
 #include <string>
 #include <vector>
 
-class Map
+class Map // TODO: swap, pImpl?
 {
     typedef std::vector<std::vector<Point>> Tiles;
-    bool valid_ = false;
+    bool valid_ = false; // TODO: exception?
 
     Tiles tiles_ = {};
 
@@ -54,7 +54,7 @@ class Map
         bool valid() { return valid_; }
         const Point startpoint();
         bool exists(const Point& p);
-        char symbol(const Point& p) { return tiles_[p.y()][p.x()].tile(); }
+        tile_id_t symbol(const Point& p) { return tiles_[p.y()][p.x()].tile(); }
 };
 
 #endif

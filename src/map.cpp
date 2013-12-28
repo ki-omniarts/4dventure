@@ -30,8 +30,8 @@ Map::Map(const std::string& mapstring)
 }
 
 Map::Map(const Map& other)
-    : tiles_(other.tiles_)
-    , symbols_(other.symbols_)
+    : tiles_{other.tiles_}
+    , symbols_{other.symbols_}
 {}
 
 Map& Map::operator=(const Map& other)
@@ -43,8 +43,8 @@ Map& Map::operator=(const Map& other)
 }
 
 Map::Map(Map&& other)
-    : tiles_(std::move(other.tiles_))
-    , symbols_(std::move(other.symbols_))
+    : tiles_{std::move(other.tiles_)}
+    , symbols_{std::move(other.symbols_)}
 {}
 
 Map& Map::operator=(Map&& other)
