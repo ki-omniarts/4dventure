@@ -24,8 +24,8 @@ allowing you to add more advanced features.
 ## Development ##
 
 You can find the main repository at
-[http://ki-omniarts.de/hg/4dventure/]
+http://ki-omniarts.de/hg/4dventure/
 where there will always be the newest version online for you.
 
 If you like you can also check out our github mirror at
-[https://github.com/KiNaudiz/4dventure].
+https://github.com/KiNaudiz/4dventure.
