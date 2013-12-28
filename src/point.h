@@ -22,15 +22,22 @@
 #define ADVENTURE_POINT_H
 
 #include <utility>
+#include <memory>
 
 typedef unsigned int tile_id_t;
 
 class Point
 {
-    unsigned int x_     = 0;
-    unsigned int y_     = 0;
-    // tile id
-    tile_id_t tile_     = '$';
+    struct Point_pimpl
+    {
+        Point_pimpl(unsigned int,unsigned int,tile_id_t);
+        unsigned int x = 0;
+        unsigned int y = 0;
+        // tile id
+        tile_id_t tile = '$';
+    };
+
+    std::unique_ptr<Point_pimpl> data_;
 
     public:
         explicit Point();
@@ -41,9 +48,14 @@ class Point
         Point& operator=(Point&& other);
         virtual ~Point() noexcept;
 
-        unsigned int x() const { return x_; }
-        unsigned int y() const { return y_; }
-        tile_id_t tile() const { return tile_; } 
+        unsigned int x() const { return data_->x; }
+        unsigned int y() const { return data_->y; }
+        tile_id_t tile() const { return data_->tile; } 
+
+        friend void swap(Point& lhs,Point& rhs) noexcept
+        {
+            std::swap(lhs.data_,rhs.data_);
+        }
 };
 
 inline bool operator==(const Point& lhs, const Point& rhs)

@@ -21,7 +21,7 @@
 #include "point.h"
 
 Point::Point(unsigned int x, unsigned int y, tile_id_t tile)
-    : x_{x}, y_{y}, tile_{tile}
+    : data_{new Point_pimpl{x,y,tile}}
 {}
 
 Point::Point()
@@ -29,35 +29,31 @@ Point::Point()
 {}
 
 Point::Point(const Point& other)
-    : x_(other.x_)
-    , y_(other.y_)
-    , tile_(other.tile_)
+    : data_{new Point_pimpl{*other.data_}}
 {}
 
 Point::Point(Point&& other)
-    : x_(std::move(other.x_))
-    , y_(std::move(other.y_))
-    , tile_(std::move(other.tile_))
-{}
+    : data_{nullptr}
+{
+    swap(*this,other);
+}
 
 Point::~Point() noexcept
 {}
 
 Point& Point::operator=(const Point& other)
 {
-    if ( this == &other ) return *this;
-    x_ = other.x_;
-    y_ = other.y_;
-    tile_ = other.tile_;
+    auto tmp = other;
+    swap(*this,tmp);
     return *this;
 }
 
 Point& Point::operator=(Point&& other)
 {
-    if ( this == &other ) return *this;
-    x_ = std::move(other.x_);
-    y_ = std::move(other.y_);
-    tile_ = std::move(other.tile_);
+    swap(*this,other);
     return *this;
 }
     
+Point::Point_pimpl::Point_pimpl(unsigned int xx,unsigned int yy,tile_id_t tt)
+    : x(xx),y(yy),tile(tt)
+{}
