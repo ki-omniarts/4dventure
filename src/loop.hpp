@@ -34,7 +34,7 @@
 
 #include "lua.hpp"
 
-const char INPUT_PREFIX[] = "\t> ";
+constexpr char INPUT_PREFIX[] = "\t> ";
 
 class Loop
 {

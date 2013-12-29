@@ -39,7 +39,7 @@ class Map
 
     std::unique_ptr<pImpl> data_;
 
-    // Symbols
+    // Symbols -- XXX how about using an array?
     static const std::vector<tile_id_t> reservedSymbols_; 
 
     // Functions
