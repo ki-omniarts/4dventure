@@ -24,17 +24,19 @@
 #include <utility>
 #include <memory>
 
-typedef unsigned int tile_id_t;
+using tile_id_t = unsigned int;
+
+constexpr tile_id_t EMPTY_TILE{'$'};
 
 class Point
 {
     struct pImpl
     {
         pImpl(unsigned int,unsigned int,tile_id_t);
-        unsigned int x = 0;
-        unsigned int y = 0;
+        unsigned int x{0};
+        unsigned int y{0};
         // tile id
-        tile_id_t tile = '$';
+        tile_id_t tile{EMPTY_TILE};
     };
 
     std::unique_ptr<pImpl> data_;

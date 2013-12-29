@@ -20,7 +20,7 @@
 
 #include "map.hpp"
 
-const std::vector<tile_id_t> Map::reservedSymbols_   = {'$'};
+const std::vector<tile_id_t> Map::reservedSymbols_{EMPTY_TILE};
 
 Map::~Map() noexcept {}
 
@@ -60,9 +60,9 @@ Map& Map::operator=(Map&& other)
 void Map::generateTiles_(const std::string& mapstring)
 {
     Map::Tiles tiles;
-    std::vector<tile_id_t> symbols = {};
-    size_t current_line = 0;
-    size_t current_col  = 0;
+    std::vector<tile_id_t> symbols{};
+    size_t current_line{0};
+    size_t current_col{0};
     tiles.push_back(std::vector<Point>());
 
     // go through each char
@@ -111,14 +111,16 @@ void Map::generateTiles_(const std::string& mapstring)
 
 const Point Map::startpoint() const
 {
-    Point p = Point(0,0);
+    Point p{0,0};
 
     for(auto y : data_->tiles)
         for(auto x : y)
-        {
             if ( ( x.tile() == 'S' ) && ( p == Point(0,0) ) )
+            {
                 p = x;
-        }
+                return p;
+            }
+
     return p;
 }
 

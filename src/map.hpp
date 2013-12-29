@@ -33,8 +33,8 @@ class Map
 
     struct pImpl
     {
-        Tiles tiles = {};
-        std::vector<tile_id_t> symbols = {};
+        Tiles tiles{};
+        std::vector<tile_id_t> symbols{};
     };
 
     std::unique_ptr<pImpl> data_;
