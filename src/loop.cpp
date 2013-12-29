@@ -57,7 +57,7 @@ void Loop::run(const std::string& filename)
         return;
     }
     
-    if (!map_->empty())
+    if (map_->empty())
     {
         throw std::runtime_error{"Empty Map"};
     }
