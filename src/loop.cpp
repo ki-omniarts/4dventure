@@ -60,7 +60,7 @@ void Loop::run(const std::string& filename)
         throw std::runtime_error{tmp};
     }
     
-    if (!map_->empty())
+    if (map_->empty())
         throw std::runtime_error{"Empty Map"};
 
     if (playerPos_ == Point(0,0))
