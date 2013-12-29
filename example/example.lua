@@ -47,6 +47,36 @@ function adv_input_ls()
     print ("This isn't your shell, you know?")
 end
 
+function adv_input_ll()
+    adv_input_ls()
+end
+
+function adv_input_(string,...)
+    local command = string.lower(string) or nil
+
+    if command == "go" or command == "walk" then
+        local s
+        if arg[1] ~= nil then
+            s = string.lower(arg[1])
+        end
+
+        if     s == "n" or s == "north" then
+            adv_goNorth()
+        elseif s == "e" or s == "east"  then
+            adv_goEast()
+        elseif s == "s" or s == "south" then
+            adv_goSouth()
+        elseif s == "w" or s == "west"  then
+            adv_goWest()
+        else
+            print ("Sorry, bro! This is no valid direction!")
+        end
+        return true
+    end
+
+    return false
+end
+
 function adv_obstacle(string)
     if string == "^" then
         print ("A mountain blocks your way.")

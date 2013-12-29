@@ -20,6 +20,7 @@
 
 #include "loop.hpp"
 #include <stdexcept>
+#include <sstream>
 
 Loop& Loop::loop()
 {
@@ -90,16 +91,32 @@ void Loop::logic_()
         running_ = false;
     else
     {     
+        std::vector<decltype(inputString_)> argv{};
+
+        //split 
+        {
+            decltype(inputString_) buf{};
+            std::stringstream ss{inputString_};
+
+            while (ss >> buf) 
+                argv.push_back(buf);
+        }
+
         lua_getglobal(L_.get(), LUA_INPUT(inputString_).c_str() );
         if (lua_isfunction(L_.get(),lua_gettop(L_.get())))
-            lua_call(L_.get(),0,0);
+        {
+            for (size_t i = 1; i < argv.size(); ++i) 
+                lua_pushstring(L_.get(),argv[i].c_str());
+            lua_call(L_.get(),argv.size()-1,0);
+        }
         else
         {
             lua_getglobal(L_.get(), LUA_INPUT("").c_str() );
             if (lua_isfunction(L_.get(),lua_gettop(L_.get())))
             {
-                lua_pushstring(L_.get(),inputString_.c_str());
-                lua_call(L_.get(),1,1);
+                for (size_t i = 0; i < argv.size(); ++i) 
+                    lua_pushstring(L_.get(),argv[i].c_str());
+                lua_call(L_.get(),argv.size(),1);
                 if (!( lua_isboolean(L_.get(),lua_gettop(L_.get())) )
                     || !(lua_toboolean(L_.get(),lua_gettop(L_.get()))) )
                     std::cout << MESSAGE_COMMAND_NOT_FOUND << std::endl;
