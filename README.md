@@ -39,6 +39,8 @@ https://github.com/ki-omniarts/4dventure.
  * More Examples
  * Add an argument to `adv_input_INPUT` to parse the rest of the input string
  * An easy way to register Lua commands in the API
+ * Give adv_eachTurn() a bool parameter that tells if there was a valid input
+ * Customizeable "Command not found"-Message
 
 ## INSTALLATION ##
 
