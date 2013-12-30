@@ -29,7 +29,7 @@
 
 class Map 
 {
-    typedef std::vector<std::vector<Point>> Tiles;
+    using Tiles = std::vector<std::vector<Point>>;
 
     struct pImpl
     {
