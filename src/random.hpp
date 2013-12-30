@@ -1,3 +1,4 @@
+// {{{ License
 /*
  * random.h
  * This file is part of 4dventure
@@ -17,14 +18,20 @@
  * You should have received a copy of the GNU General Public License
  * along with 4dventure. If not, see <http://www.gnu.org/licenses/>.
  */
+// }}} License
 
+// {{{ Include guards
 #ifndef ADVENTURE_RANDOM_HPP
 #define ADVENTURE_RANDOM_HPP
+// }}} Include guards
 
+// {{{ Includes
 #include <random>
 
 #include "lua.hpp"
+// }}} Includes
 
+// {{{ random_ranged()
 inline int random_ranged(lua_State* L)
 {
     const int args = lua_gettop(L);
@@ -44,5 +51,8 @@ inline int random_ranged(lua_State* L)
     }
     return 1;
 }
+// }}} random_ranged()
 
+// {{{ Indiclude Guards
 #endif
+// }}} Indiclude Guards

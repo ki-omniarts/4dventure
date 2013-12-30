@@ -1,3 +1,4 @@
+// {{{ License
 /*
  * loop.cpp
  * This file is part of 4dventure
@@ -17,25 +18,37 @@
  * You should have received a copy of the GNU General Public License
  * along with 4dventure. If not, see <http://www.gnu.org/licenses/>.
  */
+// }}} License
 
+// {{{ Includes
 #include "loop.hpp"
 #include <stdexcept>
 #include <sstream>
+// }}} Includes
 
+// {{{ Loop::loop()
 Loop& Loop::loop()
 {
     static Loop instance;
     return instance;
 }
+// }}} Loop::loop()
 
+// {{{ Loop *ctors
+// {{{ Constructor
 Loop::Loop()
 {}
+// }}} Constructor
 
+// {{{ Destructor
 Loop::~Loop() noexcept {}
+// }}} Destructor
+// }}} Loop *ctors
 
+// {{{ Loop::run()
 void Loop::run(const std::string& filename)
 {
-    // LUA
+    // {{{ LUA init
     luaopen_base(L_.get());
     luaL_openlibs(L_.get());
 
@@ -50,7 +63,9 @@ void Loop::run(const std::string& filename)
     lua_register(L_.get(),LUA_DOINPUT,input_);
     lua_register(L_.get(),LUA_RANDOMRANGED,random_ranged);
     lua_register(L_.get(),LUA_SETINPUTPREFIX,setInputPrefix_);
+    // }}} LUA init
 
+    // {{{ Read LUA file
     if (luaL_dofile(L_.get(),filename.c_str()) == 1)
     {
         std::string tmp{""};
@@ -60,14 +75,19 @@ void Loop::run(const std::string& filename)
 
         throw std::runtime_error{tmp};
     }
+    // }}} Read LUA file
     
+    // {{{ Check map
     if (map_->empty())
         throw std::runtime_error{"Empty Map"};
+    // }}} Check map
 
+    // {{{ Set Player Position
     if (playerPos_ == Point(0,0))
         playerPos_ = map_->startpoint();
+    // }}} Set Player Position
 
-    // actual loop
+    // {{{ Actual loop
     while(running_)
     {
         lua_getglobal(L_.get(), LUA_EACHTIME );
@@ -77,14 +97,19 @@ void Loop::run(const std::string& filename)
         input_();
         logic_();
     }
+    // }}} Actual loop
 }
+// }}} Loop::run()
 
+// {{{ Loop::input_()
 void Loop::input_()
 {
     std::cout << inputPrefix_;
     std::getline(std::cin,inputString_);
 }
+// }}} Loop::input_()
 
+// {{{ Loop::logic_()
 void Loop::logic_()
 {
     if  ( inputString_ == COMMAND_QUIT )
@@ -93,7 +118,7 @@ void Loop::logic_()
     {     
         std::vector<decltype(inputString_)> argv{};
 
-        //split 
+        // {{{ Split arguments
         {
             decltype(inputString_) buf{};
             std::stringstream ss{inputString_};
@@ -101,6 +126,7 @@ void Loop::logic_()
             while (ss >> buf) 
                 argv.push_back(buf);
         }
+        // }}} Split arguments
 
         lua_getglobal(L_.get(), LUA_INPUT(inputString_).c_str() );
         if (lua_isfunction(L_.get(),lua_gettop(L_.get())))
@@ -124,7 +150,10 @@ void Loop::logic_()
         }
     }
 }
+// }}} Loop::logic_()
 
+// {{{ Lua functions
+// {{{ Loop::setMap_()
 int Loop::setMap_(lua_State* L)
 {
     int args = lua_gettop(L);
@@ -134,7 +163,9 @@ int Loop::setMap_(lua_State* L)
 
     return 0;
 }
+// }}} Loop::setMap_()
 
+// {{{ Loop::setPlayerPos_()
 int Loop::setPlayerPos_(lua_State* L)
 {
     int args = lua_gettop(L);
@@ -145,7 +176,9 @@ int Loop::setPlayerPos_(lua_State* L)
     
     return 0;
 }
+// }}} Loop::setPlayerPos_()
 
+// {{{ Loop::getPlayerPos_()
 int Loop::getPlayerPos_(lua_State* L)
 {
     lua_pushnumber(L,Loop::loop().playerPos_.x());
@@ -153,7 +186,9 @@ int Loop::getPlayerPos_(lua_State* L)
     
     return 2;
 }
+// }}} Loop::getPlayerPos_()
 
+// {{{ Loop::tileEvent_()
 int Loop::tileEvent_(lua_State*)//TODO
 {
     lua_getglobal(Loop::loop().L_.get(), LUA_ONTILE);
@@ -169,7 +204,9 @@ int Loop::tileEvent_(lua_State*)//TODO
     
     return 0;
 }
+// }}} Loop::tileEvent_()
 
+// {{{ Loop::obstacle_()
 bool Loop::obstacle_(lua_State* L,char c)
 {
     lua_getglobal(L,LUA_OBSTACLE);
@@ -185,7 +222,10 @@ bool Loop::obstacle_(lua_State* L,char c)
 
     return false;
 }
+// }}} Loop::obstacle_()
 
+// {{{ Movement
+// {{{ Loop::walk_()
 bool Loop::walk_(direction dir)
 {
     Point p{0,0};
@@ -219,31 +259,42 @@ bool Loop::walk_(direction dir)
         
     return false;
 }
+// }}} Loop::walk_()
 
+// {{{ Loop::goNorth_()
 int Loop::goNorth_(lua_State* L)
 {
     lua_pushboolean(L,( walk_(NORTH) ));
     return 1;
 }
+// }}} Loop::goNorth_()
 
+// {{{ Loop::goSouth_()
 int Loop::goSouth_(lua_State* L)
 {
     lua_pushboolean(L,( walk_(SOUTH) ));
     return 1;
 }
+// }}} Loop::goSouth_()
 
+// {{{ Loop::goEast_()
 int Loop::goEast_(lua_State* L)
 {
     lua_pushboolean(L,( walk_(EAST) ));
     return 1;
 }
+// }}} Loop::goEast_()
 
+// {{{ Loop::goWest_()
 int Loop::goWest_(lua_State* L)
 {
     lua_pushboolean(L,( walk_(WEST) ));
     return 1;
 }
+// }}} Loop::goWest_()
+// }}} Movement
 
+// {{{ Loop::input_()
 int Loop::input_(lua_State* L)
 {
     std::cout   << Loop::loop().inputPrefix_;
@@ -252,7 +303,9 @@ int Loop::input_(lua_State* L)
     lua_pushstring(L,s.c_str());
     return 1;
 }
+// }}} Loop::input_()
 
+// {{{ Loop::setInputPrefix_()
 int Loop::setInputPrefix_(lua_State* L)
 {
     int args{lua_gettop(L)};
@@ -261,3 +314,5 @@ int Loop::setInputPrefix_(lua_State* L)
             Loop::loop().inputPrefix_ = lua_tostring(L,-args);
     return 0;
 }
+// }}} Loop::setInputPrefix_()
+// }}} Lua functions

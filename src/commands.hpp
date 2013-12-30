@@ -1,3 +1,4 @@
+// {{{ License
 /*
  * commands.h
  * This file is part of 4dventure
@@ -17,10 +18,17 @@
  * You should have received a copy of the GNU General Public License
  * along with 4dventure. If not, see <http://www.gnu.org/licenses/>.
  */
+// }}} License
 
+// {{{ Include Guards
 #ifndef ADVENTURE_COMMANDS_H
 #define ADVENTURE_COMMANDS_H
+// }}} Include Guards
 
+// {{{ Commands
 constexpr char COMMAND_QUIT[] = "quit";
+// }}} Commands
 
-#endif
+// {{{ Include Guards
+#endif // ADVENTURE_COMMANDS_H
+// }}} Include Guards

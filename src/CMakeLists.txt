@@ -1,6 +1,6 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 
-# about the project
+# {{{ about the project
 #------------------
 project( 4dventure )
 SET( 4DVENTURE_VERSION_MAJOR "1" )
@@ -10,14 +10,16 @@ SET( 4DVENTURE_VERSION_PATCH "3" )
 include(GNUInstallDirs)
 
 SET( LIBRARY_NAME c4dventure )
+# }}} about the project
 
-# Paths
+# {{{ Paths
 #------
 set(CMAKE_MODULE_PATH 
     ${CMAKE_MODULE_PATH}
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
+# {{{ Lua
 set( LUA_DIR
     ${CMAKE_CURRENT_SOURCE_DIR}/lua
 )
@@ -55,7 +57,10 @@ set( LUA_SRC
     ${LUA_DIR}/lvm.c
     ${LUA_DIR}/lzio.c
 )
+# }}} Lua
+# }}} Paths
 
+# {{{ Additional variables
 SET ( PLATTFORM
     "none"
 )
@@ -69,8 +74,9 @@ OPTION( LIBRARY
     "Set this to build a shared or static library depending on BUILD_SHARED_LIBS."
     on
 )
+# }}} Additional variables
 
-# Requirements
+# {{{ Requirements
 #-------------
 if( NOT ${STANDALONE} )
     include(FindLua50)
@@ -89,8 +95,9 @@ if( NOT ${STANDALONE} )
 else( NOT ${STANDALONE} )
     
 endif( NOT ${STANDALONE} )
+# }}} Requirements
 
-#Files
+# {{{ Files
 #-----
 SET (4dventureLibSRC
     ${CMAKE_CURRENT_SOURCE_DIR}/loop.cpp
@@ -107,14 +114,16 @@ if( ${STANDALONE} )
         ${LUA_SRC}
     )
 endif( ${STANDALONE} )
+# }}} Files
 
-# Flags
+# {{{ Flags
 #------
 set(CMAKE_CXX_FLAGS "-Wall -g -O2")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+# }}} Flags
 
-# Compile
+# {{{ Compile
 #--------
 add_executable( ${PROJECT_NAME}
     ${4dventureSRC}
@@ -134,8 +143,9 @@ if ( ${LIBRARY} )
     )
 endif ( ${LIBRARY} )
 endif( NOT ${STANDALONE} )
+# }}} Compile
 
-# Install
+# {{{ Install
 #--------
 install (PROGRAMS ${CMAKE_BINARY_DIR}/${PROJECT_NAME} DESTINATION bin)
 if( ${LIBRARY} )
@@ -146,3 +156,4 @@ if( ${LIBRARY} )
             ${CMAKE_INSTALL_LIBDIR})
     endif( ${BUILD_SHARED_LIBS} )
 endif( ${LIBRARY} )
+# }}} Install

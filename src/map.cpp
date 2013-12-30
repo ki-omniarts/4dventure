@@ -1,3 +1,4 @@
+// {{{ License
 /*
  * map.cpp
  * This file is part of 4dventure
@@ -17,46 +18,72 @@
  * You should have received a copy of the GNU General Public License
  * along with 4dventure. If not, see <http://www.gnu.org/licenses/>.
  */
+// }}} License
 
+// {{{ Includes
 #include "map.hpp"
+// }}} Includes
 
+// {{{ Map::reservecSymbols_
 const std::vector<tile_id_t> Map::reservedSymbols_{EMPTY_TILE};
+// }}} Map::reservecSymbols_
 
+// {{{ Map *ctors + Assign
+// {{{ Map::~Map()
 Map::~Map() noexcept {}
+// }}} Map::~Map()
 
+// {{{ Map Constructors
+// {{{ Map::Map()
 Map::Map()
     : data_{new pImpl{}}
 {}
+// }}} Map::Map()
 
+// {{{ Map::Map(string)
 Map::Map(const std::string& mapstring)
     : data_{new pImpl{}}
 {
     generateTiles_(mapstring);
 }
+// }}} Map::Map(string)
 
+// {{{ Map::Map(Map)
 Map::Map(const Map& other)
     : data_{new pImpl{*other.data_}}
 {}
+// }}} Map::Map(Map)
 
+// {{{ Map::Map(Map&&)
+Map::Map(Map&& other)
+    : data_{nullptr}
+{
+    swap(*this,other);
+}
+// }}} Map::Map(Map&&)
+// }}} Map Constructors
+
+// {{{ Map assign
+// {{{ Map::operator=(Map)
 Map& Map::operator=(const Map& other)
 {
     auto tmp = other;
     swap(*this,tmp);
     return *this;
 }
+// }}} Map::operator=(Map)
 
-Map::Map(Map&& other)
-    : data_{nullptr}
-{
-    swap(*this,other);
-}
-
+// {{{ Map::operator=(Map&&)
 Map& Map::operator=(Map&& other)
 {
     swap(*this,other);
     return *this;
 }
+// }}} Map::operator=(Map&&)
+// }}} Map assign
+// }}} Map *ctors + Assign
 
+// {{{ Map::generateTiles_()
 void Map::generateTiles_(const std::string& mapstring)
 {
     Map::Tiles tiles;
@@ -108,7 +135,9 @@ void Map::generateTiles_(const std::string& mapstring)
     data_->tiles    = std::move(tiles);
     data_->symbols  = std::move(symbols);
 }
+// }}} Map::generateTiles_()
 
+// {{{ Map::startpoint()
 const Point Map::startpoint() const
 {
     Point p{0,0};
@@ -123,9 +152,12 @@ const Point Map::startpoint() const
 
     return p;
 }
+// }}} Map::startpoint()
 
+// {{{ Map::exists()
 bool Map::exists(const Point& p) const
 {
     return (  ( p.y() < data_->tiles.size() ) 
            && ( p.x() < data_->tiles[p.y()].size() ) );
 }
+// }}} Map::exists()

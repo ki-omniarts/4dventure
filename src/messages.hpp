@@ -1,3 +1,4 @@
+// {{{ License
 /*
  * messages.h
  * This file is part of 4dventure
@@ -17,10 +18,17 @@
  * You should have received a copy of the GNU General Public License
  * along with 4dventure. If not, see <http://www.gnu.org/licenses/>.
  */
+// }}} License
 
+// {{{ Include guards
 #ifndef ADVENTURE_MESSAGES_HPP
 #define ADVENTURE_MESSAGES_HPP
+// }}} Include guards
 
+// {{{ Message constants
 constexpr char MESSAGE_COMMAND_NOT_FOUND[]  = "Command not found.";
+// }}} Message constants
 
+// {{{ Include guards
 #endif
+// }}} Include guards

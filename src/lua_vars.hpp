@@ -1,3 +1,4 @@
+// {{{ License
 /*
  * lua_vars.h
  * This file is part of 4dventure
@@ -17,12 +18,19 @@
  * You should have received a copy of the GNU General Public License
  * along with 4dventure. If not, see <http://www.gnu.org/licenses/>.
  */
+// }}} License
 
+// {{{ Include guards
 #ifndef ADVENTUE_LUA_VARS_HPP
 #define ADVENTUE_LUA_VARS_HPP
+// }}} Include guards
 
+// {{{ Includes
 #include <string>
+// }}} Includes
 
+// {{{ Lua functions names
+// {{{ Callable in LUA
 constexpr char LUA_QUIT[]           = "adv_quit";
 constexpr char LUA_SETMAP[]         = "adv_setMap";
 constexpr char LUA_SETPP[]          = "adv_setPlayerPosition";
@@ -37,9 +45,15 @@ constexpr char LUA_SETINPUTPREFIX[] = "adv_setInputPrefix";
 
 inline std::string LUA_INPUT(const std::string& s)
 { return std::string("adv_input_")+s; }
+// }}} Callable in LUA
 
+// {{{ Called by 4dventure
 constexpr char LUA_ONTILE[]         = "adv_onTile";
 constexpr char LUA_OBSTACLE[]       = "adv_obstacle";
 constexpr char LUA_EACHTIME[]       = "adv_eachTime";
+// }}} Called by 4dventure
+// }}} Lua functions names
 
+// {{{ Include guards
 #endif
+// }}} Include guards

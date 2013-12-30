@@ -1,3 +1,4 @@
+// {{{ License
 /*
  * 4dventure.hpp
  * This file is part of 4dventure
@@ -17,7 +18,14 @@
  * You should have received a copy of the GNU General Public License
  * along with 4dventure If not, see <http://www.gnu.org/licenses/>.
  */
+// }}} License
 
+// {{{ Include guards
+#ifndef 4DVENTURE_HPP
+#define 4DVENTURE_HPP
+// }}} Include guards
+
+// {{{ namespace 4dventure
 namespace c4dventure
 {
 
@@ -27,3 +35,8 @@ inline void runFile(const std::string& file)
 { Loop::loop().run(file); }
 
 }
+// }}} namespace 4dventure
+//
+// {{{ Include guards
+#endif // 4DVENTURE_HPP
+// }}} Include guards
