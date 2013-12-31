@@ -34,7 +34,7 @@
 // }}} Includes
 
 // {{{ class Map
-class Map 
+class Map
 {
     // {{{ Aliases
     using Tiles = std::vector<std::vector<Point>>;
