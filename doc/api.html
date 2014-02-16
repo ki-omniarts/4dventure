@@ -15,6 +15,9 @@
     <dl>
         <dt><b>adv_quit()</b></dt>
         <dd>Quits 4dventure.<br>No returns, takes no arguments.</dd>
+        <dt><b>adv_version()</b></dt>
+        <dd>Returns the 4dventure version with five return values.<br>
+        MAJOR.MINOR.PATCH-SUFFIX NAME</dd>
         <dt><b>adv_setMap(string)</b></dt>
         <dd>Takes a multi-line string as an argument.
         Each char of your string will represent a tile.
@@ -57,19 +60,26 @@
         <dt><b>adv_setInputPrefix(string)</b></dt>
         <dd>Sets the input prefix to the given string.<br>
         Returns nothing.</dd>
+        <dt><b>adv_setCommandNotFound(string)</b></dt>
+        <dd>Sets the "Command not found!" message to a custom string.</dd>
     </dl>
 
     <h2>User Defined Functions</h2>
 
     <dl>
-        <dt><b>adv_input_[string]()</b></dt>
-        <dd>Functions of this format will be called after each regulat user
-        input. It should not return anything.<br>
-        Example: Define adv_input_help() to handle a help command.</dd>
-        <dt><b>adv_input_(string)</b></dt>
+        <dt><b>adv_input_[string](...)</b></dt>
+        <dd>Functions of this format will be called after each regular user
+        input, it will take the rest of the input word by word as additional 
+        arguments. 
+        It should not return anything.<br>
+        Example: Define adv_input_help() to handle a help command
+        or a adv_input_walk(...) to handle a direction sequence.</dd>
+        <dt><b>adv_input_(string,...)</b></dt>
         <dd>This function will be called if there is no
-        <b>adv_input[string]()</b> for the user's input.
-        This allows additional characters and spaces in the commands.<br>
+        <b>adv_input_[string]()</b> for the user's input.
+        This allows additional characters and spaces in the commands
+        and it will take the rest of the input word by word as additional 
+        arguments. <br>
         It should return true if the input is handled here.</dd>
         <dt><b>adv_onTile(string)</b></dt>
         <dd>This functions will be called each time the player moves one tile.

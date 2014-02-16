@@ -1,3 +1,4 @@
+// {{{ License
 /*
  * map.h
  * This file is part of 4dventure
@@ -17,35 +18,49 @@
  * You should have received a copy of the GNU General Public License
  * along with 4dventure. If not, see <http://www.gnu.org/licenses/>.
  */
+// }}} License
 
+// {{{ Include guards
 #ifndef ADVENTURE_MAP_HPP
 #define ADVENTURE_MAP_HPP
+// }}} License
 
+// {{{ Includes
 #include "point.hpp"
 
 #include <memory>
 #include <string>
 #include <vector>
+// }}} Includes
 
-class Map 
+// {{{ class Map
+class Map
 {
-    typedef std::vector<std::vector<Point>> Tiles;
+    // {{{ Aliases
+    using Tiles = std::vector<std::vector<Point>>;
+    // }}} Aliases
 
+    // {{{ struct pImpl
     struct pImpl
     {
-        Tiles tiles = {};
-        std::vector<tile_id_t> symbols = {};
+        Tiles tiles{};
+        std::vector<tile_id_t> symbols{};
     };
+    // }}} struct pImpl
 
+    // {{{ Member variables
     std::unique_ptr<pImpl> data_;
 
-    // Symbols
+    // Symbols -- XXX how about using an array?
     static const std::vector<tile_id_t> reservedSymbols_; 
+    // }}} Member variables
 
-    // Functions
+    // {{{ Private member functions
     void generateTiles_(const std::string& mapstring);
+    // }}} Private member functions
 
     public:
+        // {{{ *ctors
         Map();
         Map(const std::string& mapstring);
         Map(const Map& other);
@@ -53,8 +68,9 @@ class Map
         Map(Map&& other);
         Map& operator=(Map&& other);
         virtual ~Map() noexcept;
+        // }}} *ctors
 
-        // Getter
+        // {{{ Getter
         const Point startpoint() const;
         bool exists(const Point& p) const;
         tile_id_t symbol(const Point& p) const
@@ -64,11 +80,17 @@ class Map
 
         // XXX: deprecated, will be removed soon
         bool valid() __attribute__ ((deprecated)) { return empty(); }
+        // }}} Getter
 
-        friend void swap(Map& lhs,Map& rhs)
+        // {{{ swap
+        friend void swap(Map& lhs,Map& rhs) noexcept
         {
             std::swap(lhs.data_,rhs.data_);
         }
+        // }}} swap
 };
+// }}} class Map
 
+// {{{ License
 #endif
+// }}} License

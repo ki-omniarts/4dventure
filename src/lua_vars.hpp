@@ -1,3 +1,4 @@
+// {{{ License
 /*
  * lua_vars.h
  * This file is part of 4dventure
@@ -17,29 +18,44 @@
  * You should have received a copy of the GNU General Public License
  * along with 4dventure. If not, see <http://www.gnu.org/licenses/>.
  */
+// }}} License
 
+// {{{ Include guards
 #ifndef ADVENTUE_LUA_VARS_HPP
 #define ADVENTUE_LUA_VARS_HPP
+// }}} Include guards
 
+// {{{ Includes
 #include <string>
+// }}} Includes
 
-const char LUA_QUIT[]           = "adv_quit";
-const char LUA_SETMAP[]         = "adv_setMap";
-const char LUA_SETPP[]          = "adv_setPlayerPosition";
-const char LUA_GETPP[]          = "adv_getPlayerPosition";
-const char LUA_GONORTH[]        = "adv_goNorth";
-const char LUA_GOSOUTH[]        = "adv_goSouth";
-const char LUA_GOEAST[]         = "adv_goEast";
-const char LUA_GOWEST[]         = "adv_goWest";
-const char LUA_DOINPUT[]        = "adv_input";
-const char LUA_RANDOMRANGED[]   = "adv_random_ranged";
-const char LUA_SETINPUTPREFIX[] = "adv_setInputPrefix";
+// {{{ Lua functions names
+// {{{ Callable in LUA
+constexpr char LUA_QUIT[]           = "adv_quit";
+constexpr char LUA_GETVERSION[]     = "adv_version";
+constexpr char LUA_SETMAP[]         = "adv_setMap";
+constexpr char LUA_SETPP[]          = "adv_setPlayerPosition";
+constexpr char LUA_GETPP[]          = "adv_getPlayerPosition";
+constexpr char LUA_GONORTH[]        = "adv_goNorth";
+constexpr char LUA_GOSOUTH[]        = "adv_goSouth";
+constexpr char LUA_GOEAST[]         = "adv_goEast";
+constexpr char LUA_GOWEST[]         = "adv_goWest";
+constexpr char LUA_DOINPUT[]        = "adv_input";
+constexpr char LUA_RANDOMRANGED[]   = "adv_random_ranged";
+constexpr char LUA_SETINPUTPREFIX[] = "adv_setInputPrefix";
+constexpr char LUA_SETCMDNOTFOUND[] = "adv_setCommandNotFound";
 
-inline std::string LUA_INPUT(const std::string s)
+inline std::string LUA_INPUT(const std::string& s)
 { return std::string("adv_input_")+s; }
+// }}} Callable in LUA
 
-const char LUA_ONTILE[]         = "adv_onTile";
-const char LUA_OBSTACLE[]       = "adv_obstacle";
-const char LUA_EACHTIME[]       = "adv_eachTime";
+// {{{ Called by 4dventure
+constexpr char LUA_ONTILE[]         = "adv_onTile";
+constexpr char LUA_OBSTACLE[]       = "adv_obstacle";
+constexpr char LUA_EACHTIME[]       = "adv_eachTime";
+// }}} Called by 4dventure
+// }}} Lua functions names
 
+// {{{ Include guards
 #endif
+// }}} Include guards

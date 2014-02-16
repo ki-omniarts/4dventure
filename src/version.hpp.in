@@ -1,9 +1,8 @@
-// {{{ License
 /*
- * commands.h
+ * version.hpp
  * This file is part of 4dventure
  *
- * Copyright (C) 2012 - KiNaudiz
+ * Copyright (C) 2014 - KiNaudiz
  *
  * 4dventure is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,19 +15,21 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with 4dventure. If not, see <http://www.gnu.org/licenses/>.
+ * along with 4dventure If not, see <http://www.gnu.org/licenses/>.
  */
-// }}} License
 
-// {{{ Include Guards
-#ifndef ADVENTURE_COMMANDS_H
-#define ADVENTURE_COMMANDS_H
-// }}} Include Guards
+#ifndef ADVENTURE_VERSION_HPP
+#define ADVENTURE_VERSION_HPP
 
-// {{{ Commands
-constexpr char COMMAND_QUIT[] = "quit";
-// }}} Commands
+namespace version 
+{
 
-// {{{ Include Guards
-#endif // ADVENTURE_COMMANDS_H
-// }}} Include Guards
+constexpr unsigned int MAJOR = @4DVENTURE_VERSION_MAJOR@;
+constexpr unsigned int MINOR = @4DVENTURE_VERSION_MINOR@;
+constexpr unsigned int PATCH = @4DVENTURE_VERSION_PATCH@;
+constexpr char      SUFFIX[] = "@4DVENTURE_VERSION_SUFFIX@";
+constexpr char        NAME[] = "@4DVENTURE_VERSION_NAME@";
+
+} // namespace: version
+
+#endif /* end of include guard: ADVENTURE_VERSION_HPP */
