@@ -1,4 +1,4 @@
-# 4dventure v1.1.3 #
+# 4dventure v1.2.0 – Chuck the Plant #
 
 ## Are you ready for an 4dventure? ##
 
@@ -74,6 +74,12 @@ To install globally:
     $ sudo make install
 
 ## Changelog ##
+
+### 1.2.0 ###
+
+* Customizeable "Command not found"-Message
+* Customizeable quit Command
+* Added Version Output and Version Getters for Lua
 
 ### 1.1.0 ###
 
