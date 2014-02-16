@@ -64,6 +64,7 @@ void Loop::run(const std::string& filename)
     lua_register(L_.get(),LUA_DOINPUT,input_);
     lua_register(L_.get(),LUA_RANDOMRANGED,random_ranged);
     lua_register(L_.get(),LUA_SETINPUTPREFIX,setInputPrefix_);
+    lua_register(L_.get(),LUA_SETCMDNOTFOUND,setCommandNotFound_);
     lua_register(L_.get(),LUA_GETVERSION,getVersion_);
     // }}} LUA init
 
@@ -143,7 +144,7 @@ void Loop::run(const std::string& filename)
                 lua_call(L_.get(),argv.size(),1);
                 if (!( lua_isboolean(L_.get(),lua_gettop(L_.get())) )
                     || !(lua_toboolean(L_.get(),lua_gettop(L_.get()))) )
-                    std::cout << MESSAGE_COMMAND_NOT_FOUND << std::endl;
+                    std::cout << cmdNotFound_ << std::endl;
             }
         }
     }
@@ -309,6 +310,17 @@ void Loop::run(const std::string& filename)
         if (args > 0)
             if (lua_isstring(L,-args))
                 Loop::loop().inputPrefix_ = lua_tostring(L,-args);
+        return 0;
+    }
+    // }}} Loop::setInputPrefix_()
+
+    // {{{ Loop::setInputPrefix_()
+    int Loop::setCommandNotFound_(lua_State* L)
+    {
+        int args{lua_gettop(L)};
+        if (args > 0)
+            if (lua_isstring(L,-args))
+                Loop::loop().cmdNotFound_ = lua_tostring(L,-args);
         return 0;
     }
     // }}} Loop::setInputPrefix_()
