@@ -112,7 +112,7 @@ void Loop::input_()
 // {{{ Loop::logic_()
 void Loop::logic_()
 {
-    if  ( inputString_ == COMMAND_QUIT )
+    if  (inputString_ == COMMAND_QUIT)
         running_ = false;
     else
     {     
@@ -128,7 +128,7 @@ void Loop::logic_()
         }
         // }}} Split arguments
 
-        lua_getglobal(L_.get(), LUA_INPUT(inputString_).c_str() );
+        lua_getglobal(L_.get(), LUA_INPUT(argv[0]).c_str() );
         if (lua_isfunction(L_.get(),lua_gettop(L_.get())))
         {
             for (size_t i = 1; i < argv.size(); ++i) 

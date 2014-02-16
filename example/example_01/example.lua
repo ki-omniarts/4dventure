@@ -175,7 +175,7 @@ function adv_onTile(string)
         repeat
             print "Choose:"
             input = string.lower(adv_input()) or nil;
-        until input input == "y" or input == "n"
+        until input == "y" or input == "n"
 
         -- Depending on the input we'll have another event
         if input == "Y" or input == "y" then
