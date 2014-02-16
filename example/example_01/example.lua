@@ -23,6 +23,8 @@ map =
 ^^^^^^^^^
 ]];
 
+adv_version()
+
 -- Let's also print a Message when this file is loaded by 4dventure
 print ("You're lost in your garden, you should try to find your house.")
 
@@ -44,11 +46,25 @@ end
 -- This function will be executed when the user types "help"
 -- It just prints some basic commands you can use
 function adv_input_help()
+    print "q - Quit game"
     print "n - Go northward"
     print "e - Go eastward"
     print "s - Go southward"
     print "w - Go westward"
 end
+
+-- It's always good to have a quit command
+function adv_input_q()
+    print "Do you really want to quit this awesome game?! (y,[n])"
+    input = string.lower(adv_input()) or nil;
+    if input == "y" or input == "yes" then
+        print "Bye :'("
+        adv_quit()
+    else 
+        print "Hooray! You wanna stay!"
+    end
+end
+
 
 -- Those four functions will be executed it the player types n, s, e or w
 -- They call predefined functions from 4dventure that will update the

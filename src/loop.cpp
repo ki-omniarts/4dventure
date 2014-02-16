@@ -54,7 +54,6 @@ void Loop::run(const std::string& filename)
     luaL_openlibs(L_.get());
 
     lua_register(L_.get(),LUA_QUIT,quit_);
-    lua_register(L_.get(),LUA_VERSION,getVersion_);
     lua_register(L_.get(),LUA_SETMAP,setMap_);
     lua_register(L_.get(),LUA_SETPP,setPlayerPos_);
     lua_register(L_.get(),LUA_GETPP,getPlayerPos_);
@@ -65,6 +64,7 @@ void Loop::run(const std::string& filename)
     lua_register(L_.get(),LUA_DOINPUT,input_);
     lua_register(L_.get(),LUA_RANDOMRANGED,random_ranged);
     lua_register(L_.get(),LUA_SETINPUTPREFIX,setInputPrefix_);
+    lua_register(L_.get(),LUA_GETVERSION,getVersion_);
     // }}} LUA init
 
     // {{{ Read LUA file
@@ -114,41 +114,36 @@ void Loop::input_()
 // {{{ Loop::logic_()
 void Loop::logic_()
 {
-    if  (inputString_ == COMMAND_QUIT)
-        running_ = false;
+    std::vector<decltype(inputString_)> argv{};
+
+    // {{{ Split arguments
+    {
+        decltype(inputString_) buf{};
+        std::stringstream ss{inputString_};
+
+        while (ss >> buf) 
+            argv.push_back(buf);
+    }
+    // }}} Split arguments
+
+    lua_getglobal(L_.get(), LUA_INPUT(argv[0]).c_str() );
+    if (lua_isfunction(L_.get(),lua_gettop(L_.get())))
+    {
+        for (size_t i = 1; i < argv.size(); ++i) 
+            lua_pushstring(L_.get(),argv[i].c_str());
+        lua_call(L_.get(),argv.size()-1,0);
+    }
     else
-    {     
-        std::vector<decltype(inputString_)> argv{};
-
-        // {{{ Split arguments
-        {
-            decltype(inputString_) buf{};
-            std::stringstream ss{inputString_};
-
-            while (ss >> buf) 
-                argv.push_back(buf);
-        }
-        // }}} Split arguments
-
-        lua_getglobal(L_.get(), LUA_INPUT(argv[0]).c_str() );
+    {
+        lua_getglobal(L_.get(), LUA_INPUT("").c_str() );
         if (lua_isfunction(L_.get(),lua_gettop(L_.get())))
         {
-            for (size_t i = 1; i < argv.size(); ++i) 
+            for (size_t i = 0; i < argv.size(); ++i) 
                 lua_pushstring(L_.get(),argv[i].c_str());
-            lua_call(L_.get(),argv.size()-1,0);
-        }
-        else
-        {
-            lua_getglobal(L_.get(), LUA_INPUT("").c_str() );
-            if (lua_isfunction(L_.get(),lua_gettop(L_.get())))
-            {
-                for (size_t i = 0; i < argv.size(); ++i) 
-                    lua_pushstring(L_.get(),argv[i].c_str());
-                lua_call(L_.get(),argv.size(),1);
-                if (!( lua_isboolean(L_.get(),lua_gettop(L_.get())) )
-                    || !(lua_toboolean(L_.get(),lua_gettop(L_.get()))) )
-                    std::cout << MESSAGE_COMMAND_NOT_FOUND << std::endl;
-            }
+            lua_call(L_.get(),argv.size(),1);
+            if (!( lua_isboolean(L_.get(),lua_gettop(L_.get())) )
+                || !(lua_toboolean(L_.get(),lua_gettop(L_.get()))) )
+                std::cout << MESSAGE_COMMAND_NOT_FOUND << std::endl;
         }
     }
 }
@@ -326,7 +321,7 @@ int Loop::getVersion_(lua_State* L)
     lua_pushnumber(L,version::PATCH);
     lua_pushstring(L,version::SUFFIX);
     lua_pushstring(L,version::NAME);
-    return 5;
+    return 1;
 }
-// }}} Loop::getVersion*_()
+// }}} Loop::getVersion_()
 // }}} Lua functions
