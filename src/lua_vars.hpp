@@ -32,6 +32,11 @@
 // {{{ Lua functions names
 // {{{ Callable in LUA
 constexpr char LUA_QUIT[]           = "adv_quit";
+constexpr char LUA_VERSION_MAJOR[]  = "adv_version_major";
+constexpr char LUA_VERSION_MINOR[]  = "adv_version_minor";
+constexpr char LUA_VERSION_PATCH[]  = "adv_version_patch";
+constexpr char LUA_VERSION_SUFFIX[] = "adv_version_suffix";
+constexpr char LUA_VERSION_NAME[]   = "adv_version_name";
 constexpr char LUA_SETMAP[]         = "adv_setMap";
 constexpr char LUA_SETPP[]          = "adv_setPlayerPosition";
 constexpr char LUA_GETPP[]          = "adv_getPlayerPosition";

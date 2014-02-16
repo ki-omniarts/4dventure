@@ -6,6 +6,8 @@ project( 4dventure )
 SET( 4DVENTURE_VERSION_MAJOR "1" )
 SET( 4DVENTURE_VERSION_MINOR "1" )
 SET( 4DVENTURE_VERSION_PATCH "3" )
+SET( 4DVENTURE_VERSION_SUFFIX "nightly" )
+SET( 4Dventure_VERSION_NAME "" )
 
 include(GNUInstallDirs)
 
@@ -114,6 +116,11 @@ if( ${STANDALONE} )
         ${LUA_SRC}
     )
 endif( ${STANDALONE} )
+
+CONFIGURE_FILE (
+    ${CMAKE_CURRENT_SOURCE_DIR}/version.hpp.in
+    ${CMAKE_CURRENT_SOURCE_DIR}/version.hpp
+)
 # }}} Files
 
 # {{{ Flags

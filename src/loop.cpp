@@ -22,6 +22,7 @@
 
 // {{{ Includes
 #include "loop.hpp"
+#include "version.hpp"
 #include <stdexcept>
 #include <sstream>
 // }}} Includes
@@ -53,6 +54,11 @@ void Loop::run(const std::string& filename)
     luaL_openlibs(L_.get());
 
     lua_register(L_.get(),LUA_QUIT,quit_);
+    lua_register(L_.get(),LUA_VERSION_MAJOR,getVersionMajor_);
+    lua_register(L_.get(),LUA_VERSION_MINOR,getVersionMinor_);
+    lua_register(L_.get(),LUA_VERSION_PATCH,getVersionPatch_);
+    lua_register(L_.get(),LUA_VERSION_SUFFIX,getVersionSuffix_);
+    lua_register(L_.get(),LUA_VERSION_NAME,getVersionName_);
     lua_register(L_.get(),LUA_SETMAP,setMap_);
     lua_register(L_.get(),LUA_SETPP,setPlayerPos_);
     lua_register(L_.get(),LUA_GETPP,getPlayerPos_);
@@ -315,4 +321,32 @@ int Loop::setInputPrefix_(lua_State* L)
     return 0;
 }
 // }}} Loop::setInputPrefix_()
+
+// {{{ Loop::getVersion*_()
+int Loop::getVersionMajor_(lua_State* L)
+{
+    lua_pushnumber(L,version::MAJOR);
+    return 1;
+}
+int Loop::getVersionMinor_(lua_State* L)
+{
+    lua_pushnumber(L,version::MINOR);
+    return 1;
+}
+int Loop::getVersionPatch_(lua_State* L)
+{
+    lua_pushnumber(L,version::PATCH);
+    return 1;
+}
+int Loop::getVersionSuffix_(lua_State* L)
+{
+    lua_pushstring(L,version::SUFFIX);
+    return 1;
+}
+int Loop::getVersionName_(lua_State* L)
+{
+    lua_pushstring(L,version::NAME);
+    return 1;
+}
+// }}} Loop::getVersion*_()
 // }}} Lua functions

@@ -71,6 +71,11 @@ class Loop
     static bool obstacle_(lua_State* L,char c);
     static int input_(lua_State* L);
     static int setInputPrefix_(lua_State* L);
+    static int getVersionMajor_(lua_State* L);
+    static int getVersionMinor_(lua_State* L);
+    static int getVersionPatch_(lua_State* L);
+    static int getVersionSuffix_(lua_State* L);
+    static int getVersionName_(lua_State* L);
     // }}} LUA functions
 
     // {{{ Movement
