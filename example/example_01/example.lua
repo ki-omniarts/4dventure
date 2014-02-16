@@ -23,8 +23,6 @@ map =
 ^^^^^^^^^
 ]];
 
-adv_version()
-
 -- Let's also print a Message when this file is loaded by 4dventure
 print ("You're lost in your garden, you should try to find your house.")
 
