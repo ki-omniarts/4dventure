@@ -34,13 +34,16 @@ https://github.com/ki-omniarts/4dventure.
 
 ### Upcoming ###
 
+ * Image Maps, Waypoint Maps, advanced Map API for dynamic Maps
+ * zip File Support
  * Ingame Sounds
  * Some Lua libraries that will make your life easier
  * More Examples
  * Add an argument to `adv_input_INPUT` to parse the rest of the input string
  * An easy way to register Lua commands in the API
  * Give adv_eachTurn() a bool parameter that tells if there was a valid input
- * Customizeable "Command not found"-Message
+ * Support for configuration files and savestates
+ * Multiplayer support
 
 ## INSTALLATION ##
 

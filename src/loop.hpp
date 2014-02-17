@@ -74,6 +74,7 @@ class Loop
     static int setInputPrefix_(lua_State* L);
     static int setCommandNotFound_(lua_State* L);
     static int getVersion_(lua_State* L);
+    static int wait_(lua_State* L);
     // }}} LUA functions
 
     // {{{ Movement

@@ -6,7 +6,7 @@ project( 4dventure )
 SET( 4DVENTURE_VERSION_MAJOR "1" )
 SET( 4DVENTURE_VERSION_MINOR "2" )
 SET( 4DVENTURE_VERSION_PATCH "0" )
-SET( 4DVENTURE_VERSION_SUFFIX "" )
+SET( 4DVENTURE_VERSION_SUFFIX "-nightly" )
 SET( 4Dventure_VERSION_NAME "Chuck the Plant" )
 
 include(GNUInstallDirs)
@@ -127,7 +127,7 @@ CONFIGURE_FILE (
 #------
 set(CMAKE_CXX_FLAGS "-Wall -g -O2")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread")
 # }}} Flags
 
 # {{{ Compile

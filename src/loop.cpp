@@ -25,6 +25,8 @@
 #include "version.hpp"
 #include <stdexcept>
 #include <sstream>
+#include <thread>
+#include <chrono>
 // }}} Includes
 
 // {{{ Loop::loop()
@@ -66,6 +68,7 @@ void Loop::run(const std::string& filename)
     lua_register(L_.get(),LUA_SETINPUTPREFIX,setInputPrefix_);
     lua_register(L_.get(),LUA_SETCMDNOTFOUND,setCommandNotFound_);
     lua_register(L_.get(),LUA_GETVERSION,getVersion_);
+    lua_register(L_.get(),LUA_WAIT,wait_);
     // }}} LUA init
 
     // {{{ Read LUA file
@@ -336,4 +339,16 @@ void Loop::run(const std::string& filename)
         return 5;
     }
     // }}} Loop::getVersion_()
+
+    // {{{ Loop::wait_()
+    int Loop::wait_(lua_State* L)
+    {
+        int args{lua_gettop(L)};
+        if (args > 0)
+            if (lua_isnumber(L,-args))
+                std::this_thread::sleep_for(
+                       std::chrono::milliseconds(lua_tointeger(L,-args)));
+        return 0;
+    }
+    // }}} Loop::wait_()
     // }}} Lua functions
