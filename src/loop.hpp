@@ -56,7 +56,7 @@ class Loop
     std::string inputPrefix_    = INPUT_PREFIX;
 
     std::shared_ptr<lua_State>L_= 
-        std::shared_ptr<lua_State>{lua_open(),lua_close};
+        std::shared_ptr<lua_State>{luaL_newstate(),lua_close};
     // }}} Member variables
 
     // {{{ LUA functions
