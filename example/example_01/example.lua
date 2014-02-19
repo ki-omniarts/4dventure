@@ -115,7 +115,9 @@ function adv_input_(string,...)
         -- to lower case
         local s
     if arg then
+    	if arg[1] then
 	    s = string.lower(arg[1])
+	end
     end
 
         -- Here we go through all our cases that could be directions
