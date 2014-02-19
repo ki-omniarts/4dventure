@@ -114,7 +114,8 @@ function adv_input_(string,...)
         -- Again we convert the first argument that has to be the direction
         -- to lower case
         local s
-        s = string.lower(arg[1]) or nil
+	s = arg[1] or nil
+	if s then s = string.lower(s) end
 
         -- Here we go through all our cases that could be directions
         if     s == "n" or s == "north" then
