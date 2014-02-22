@@ -83,7 +83,7 @@ class Map
         // }}} Getter
 
         // {{{ swap
-        friend void swap(Map& lhs,Map& rhs) noexcept
+        friend void swap(Map& lhs,Map& rhs)
         {
             std::swap(lhs.data_,rhs.data_);
         }
