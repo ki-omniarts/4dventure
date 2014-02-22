@@ -113,14 +113,14 @@ function adv_input_(string,...)
     if command == "go" or command == "walk" then
         -- Again we convert the first argument that has to be the direction
         -- to lower case
-        -- In order for both Lua5.1 and Lua5.2 to work we check if there
-        -- is an argument(if there is not, the latter would panic because you
-        -- try to index it) and whether the first element of the argument list
-        -- exists (else there would be arg, but no arg[1] in Lua5.1)
+        -- But first we'll have to check if there are enough arguments given
+        -- by the user.
+        -- For additional information about this Lua part please checkout
+        -- <http://lua-users.org/wiki/FunctionCallTutorial>
         local s
-    if arg and arg[1] then
-	        s = string.lower(arg[1])
-    end
+        if {...} and #{...} > 0 then
+            s = string.lower(select(1,...)) or nil
+        end
 
         -- Here we go through all our cases that could be directions
         if     s == "n" or s == "north" then
