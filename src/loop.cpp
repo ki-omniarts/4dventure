@@ -22,8 +22,11 @@
 
 // {{{ Includes
 #include "loop.hpp"
+#include "version.hpp"
 #include <stdexcept>
 #include <sstream>
+#include <thread>
+#include <chrono>
 // }}} Includes
 
 // {{{ Loop::loop()
@@ -63,6 +66,9 @@ void Loop::run(const std::string& filename)
     lua_register(L_.get(),LUA_DOINPUT,input_);
     lua_register(L_.get(),LUA_RANDOMRANGED,random_ranged);
     lua_register(L_.get(),LUA_SETINPUTPREFIX,setInputPrefix_);
+    lua_register(L_.get(),LUA_SETCMDNOTFOUND,setCommandNotFound_);
+    lua_register(L_.get(),LUA_GETVERSION,getVersion_);
+    lua_register(L_.get(),LUA_WAIT,wait_);
     // }}} LUA init
 
     // {{{ Read LUA file
@@ -92,30 +98,26 @@ void Loop::run(const std::string& filename)
     {
         lua_getglobal(L_.get(), LUA_EACHTIME );
         if (lua_isfunction(L_.get(),lua_gettop(L_.get())))
-            lua_call(L_.get(),0,0);
+                lua_call(L_.get(),0,0);
 
-        input_();
-        logic_();
+            input_();
+            logic_();
+        }
+        // }}} Actual loop
     }
-    // }}} Actual loop
-}
-// }}} Loop::run()
+    // }}} Loop::run()
 
-// {{{ Loop::input_()
-void Loop::input_()
-{
-    std::cout << inputPrefix_;
-    std::getline(std::cin,inputString_);
-}
-// }}} Loop::input_()
+    // {{{ Loop::input_()
+    void Loop::input_()
+    {
+        std::cout << inputPrefix_;
+        std::getline(std::cin,inputString_);
+    }
+    // }}} Loop::input_()
 
-// {{{ Loop::logic_()
-void Loop::logic_()
-{
-    if  ( inputString_ == COMMAND_QUIT )
-        running_ = false;
-    else
-    {     
+    // {{{ Loop::logic_()
+    void Loop::logic_()
+    {
         std::vector<decltype(inputString_)> argv{};
 
         // {{{ Split arguments
@@ -128,7 +130,7 @@ void Loop::logic_()
         }
         // }}} Split arguments
 
-        lua_getglobal(L_.get(), LUA_INPUT(inputString_).c_str() );
+        lua_getglobal(L_.get(), LUA_INPUT(argv[0]).c_str() );
         if (lua_isfunction(L_.get(),lua_gettop(L_.get())))
         {
             for (size_t i = 1; i < argv.size(); ++i) 
@@ -145,174 +147,208 @@ void Loop::logic_()
                 lua_call(L_.get(),argv.size(),1);
                 if (!( lua_isboolean(L_.get(),lua_gettop(L_.get())) )
                     || !(lua_toboolean(L_.get(),lua_gettop(L_.get()))) )
-                    std::cout << MESSAGE_COMMAND_NOT_FOUND << std::endl;
+                    std::cout << cmdNotFound_ << std::endl;
             }
         }
     }
-}
-// }}} Loop::logic_()
+    // }}} Loop::logic_()
 
-// {{{ Lua functions
-// {{{ Loop::setMap_()
-int Loop::setMap_(lua_State* L)
-{
-    int args = lua_gettop(L);
-    if (args > 0)
-        if(lua_isstring(L,-args))
-            Loop::loop().map_.reset(new Map(lua_tostring(L,-args)));
-
-    return 0;
-}
-// }}} Loop::setMap_()
-
-// {{{ Loop::setPlayerPos_()
-int Loop::setPlayerPos_(lua_State* L)
-{
-    int args = lua_gettop(L);
-    if (args > 1)
-        if (lua_isnumber(L,-args) && lua_isnumber(L,-args+1))
-            Loop::loop().playerPos_ = 
-                Point(lua_tonumber(L,-args),lua_tonumber(L,-args+1));
-    
-    return 0;
-}
-// }}} Loop::setPlayerPos_()
-
-// {{{ Loop::getPlayerPos_()
-int Loop::getPlayerPos_(lua_State* L)
-{
-    lua_pushnumber(L,Loop::loop().playerPos_.x());
-    lua_pushnumber(L,Loop::loop().playerPos_.y());
-    
-    return 2;
-}
-// }}} Loop::getPlayerPos_()
-
-// {{{ Loop::tileEvent_()
-int Loop::tileEvent_(lua_State*)//TODO
-{
-    lua_getglobal(Loop::loop().L_.get(), LUA_ONTILE);
-    
-    if (lua_isfunction(Loop::loop().L_.get(),lua_gettop(Loop::loop().L_.get())))
+    // {{{ Lua functions
+    // {{{ Loop::setMap_()
+    int Loop::setMap_(lua_State* L)
     {
-        lua_pushstring(Loop::loop().L_.get(),
-            (std::string("")+
-            static_cast<char>(
-                (Loop::loop().map_->symbol(Loop::loop().playerPos_)))).c_str());
-        lua_call(Loop::loop().L_.get(),1,0);
+        int args = lua_gettop(L);
+        if (args > 0)
+            if(lua_isstring(L,-args))
+                Loop::loop().map_.reset(new Map(lua_tostring(L,-args)));
+
+        return 0;
     }
-    
-    return 0;
-}
-// }}} Loop::tileEvent_()
+    // }}} Loop::setMap_()
 
-// {{{ Loop::obstacle_()
-bool Loop::obstacle_(lua_State* L,char c)
-{
-    lua_getglobal(L,LUA_OBSTACLE);
-
-    if (lua_isfunction(L,lua_gettop(L)))
+    // {{{ Loop::setPlayerPos_()
+    int Loop::setPlayerPos_(lua_State* L)
     {
-        lua_pushstring(L,
-            (std::string("")+c).c_str());
-        lua_call(L,1,1);
-        if ( lua_isboolean(L,lua_gettop(L)) )
-            return lua_toboolean(L,lua_gettop(L));
-    }
-
-    return false;
-}
-// }}} Loop::obstacle_()
-
-// {{{ Movement
-// {{{ Loop::walk_()
-bool Loop::walk_(direction dir)
-{
-    Point p{0,0};
-    uint currentx = Loop::loop().playerPos_.x();
-    uint currenty = Loop::loop().playerPos_.y();
-
-    switch (dir)
-    {
-        case NORTH:
-            p = Point(currentx,currenty-1);
-            break;
-        case SOUTH:
-            p = Point(currentx,currenty+1);
-            break;
-        case EAST:
-            p = Point(currentx+1,currenty);
-            break;
-        case WEST:
-            p = Point(currentx-1,currenty);
-            break;
-        default:
-            break;
-    }
-    if ( Loop::loop().map_->exists(p) 
-        && !( obstacle_(Loop::loop().L_.get(),Loop::loop().map_->symbol(p)) ) )
-    {
-        Loop::loop().playerPos_ = p;
-        tileEvent_(Loop::loop().L_.get());
-        return true;
-    }
+        int args = lua_gettop(L);
+        if (args > 1)
+            if (lua_isnumber(L,-args) && lua_isnumber(L,-args+1))
+                Loop::loop().playerPos_ = 
+                    Point(lua_tonumber(L,-args),lua_tonumber(L,-args+1));
         
-    return false;
-}
-// }}} Loop::walk_()
+        return 0;
+    }
+    // }}} Loop::setPlayerPos_()
 
-// {{{ Loop::goNorth_()
-int Loop::goNorth_(lua_State* L)
-{
-    lua_pushboolean(L,( walk_(NORTH) ));
-    return 1;
-}
-// }}} Loop::goNorth_()
+    // {{{ Loop::getPlayerPos_()
+    int Loop::getPlayerPos_(lua_State* L)
+    {
+        lua_pushnumber(L,Loop::loop().playerPos_.x());
+        lua_pushnumber(L,Loop::loop().playerPos_.y());
+        
+        return 2;
+    }
+    // }}} Loop::getPlayerPos_()
 
-// {{{ Loop::goSouth_()
-int Loop::goSouth_(lua_State* L)
-{
-    lua_pushboolean(L,( walk_(SOUTH) ));
-    return 1;
-}
-// }}} Loop::goSouth_()
+    // {{{ Loop::tileEvent_()
+    int Loop::tileEvent_(lua_State*)//TODO
+    {
+        lua_getglobal(Loop::loop().L_.get(), LUA_ONTILE);
+        
+        if (lua_isfunction(Loop::loop().L_.get(),lua_gettop(Loop::loop().L_.get())))
+        {
+            lua_pushstring(Loop::loop().L_.get(),
+                (std::string("")+
+                static_cast<char>(
+                    (Loop::loop().map_->symbol(Loop::loop().playerPos_)))).c_str());
+            lua_call(Loop::loop().L_.get(),1,0);
+        }
+        
+        return 0;
+    }
+    // }}} Loop::tileEvent_()
 
-// {{{ Loop::goEast_()
-int Loop::goEast_(lua_State* L)
-{
-    lua_pushboolean(L,( walk_(EAST) ));
-    return 1;
-}
-// }}} Loop::goEast_()
+    // {{{ Loop::obstacle_()
+    bool Loop::obstacle_(lua_State* L,char c)
+    {
+        lua_getglobal(L,LUA_OBSTACLE);
 
-// {{{ Loop::goWest_()
-int Loop::goWest_(lua_State* L)
-{
-    lua_pushboolean(L,( walk_(WEST) ));
-    return 1;
-}
-// }}} Loop::goWest_()
-// }}} Movement
+        if (lua_isfunction(L,lua_gettop(L)))
+        {
+            lua_pushstring(L,
+                (std::string("")+c).c_str());
+            lua_call(L,1,1);
+            if ( lua_isboolean(L,lua_gettop(L)) )
+                return lua_toboolean(L,lua_gettop(L));
+        }
 
-// {{{ Loop::input_()
-int Loop::input_(lua_State* L)
-{
-    std::cout   << Loop::loop().inputPrefix_;
-    std::string s;
-    std::getline(std::cin,s);
-    lua_pushstring(L,s.c_str());
-    return 1;
-}
-// }}} Loop::input_()
+        return false;
+    }
+    // }}} Loop::obstacle_()
 
-// {{{ Loop::setInputPrefix_()
-int Loop::setInputPrefix_(lua_State* L)
-{
-    int args{lua_gettop(L)};
-    if (args > 0)
-        if (lua_isstring(L,-args))
-            Loop::loop().inputPrefix_ = lua_tostring(L,-args);
-    return 0;
-}
-// }}} Loop::setInputPrefix_()
-// }}} Lua functions
+    // {{{ Movement
+    // {{{ Loop::walk_()
+    bool Loop::walk_(direction dir)
+    {
+        Point p{0,0};
+        uint currentx = Loop::loop().playerPos_.x();
+        uint currenty = Loop::loop().playerPos_.y();
+
+        switch (dir)
+        {
+            case NORTH:
+                p = Point(currentx,currenty-1);
+                break;
+            case SOUTH:
+                p = Point(currentx,currenty+1);
+                break;
+            case EAST:
+                p = Point(currentx+1,currenty);
+                break;
+            case WEST:
+                p = Point(currentx-1,currenty);
+                break;
+            default:
+                break;
+        }
+        if ( Loop::loop().map_->exists(p) 
+            && !( obstacle_(Loop::loop().L_.get(),Loop::loop().map_->symbol(p)) ) )
+        {
+            Loop::loop().playerPos_ = p;
+            tileEvent_(Loop::loop().L_.get());
+            return true;
+        }
+            
+        return false;
+    }
+    // }}} Loop::walk_()
+
+    // {{{ Loop::goNorth_()
+    int Loop::goNorth_(lua_State* L)
+    {
+        lua_pushboolean(L,( walk_(NORTH) ));
+        return 1;
+    }
+    // }}} Loop::goNorth_()
+
+    // {{{ Loop::goSouth_()
+    int Loop::goSouth_(lua_State* L)
+    {
+        lua_pushboolean(L,( walk_(SOUTH) ));
+        return 1;
+    }
+    // }}} Loop::goSouth_()
+
+    // {{{ Loop::goEast_()
+    int Loop::goEast_(lua_State* L)
+    {
+        lua_pushboolean(L,( walk_(EAST) ));
+        return 1;
+    }
+    // }}} Loop::goEast_()
+
+    // {{{ Loop::goWest_()
+    int Loop::goWest_(lua_State* L)
+    {
+        lua_pushboolean(L,( walk_(WEST) ));
+        return 1;
+    }
+    // }}} Loop::goWest_()
+    // }}} Movement
+
+    // {{{ Loop::input_()
+    int Loop::input_(lua_State* L)
+    {
+        std::cout   << Loop::loop().inputPrefix_;
+        std::string s;
+        std::getline(std::cin,s);
+        lua_pushstring(L,s.c_str());
+        return 1;
+    }
+    // }}} Loop::input_()
+
+    // {{{ Loop::setInputPrefix_()
+    int Loop::setInputPrefix_(lua_State* L)
+    {
+        int args{lua_gettop(L)};
+        if (args > 0)
+            if (lua_isstring(L,-args))
+                Loop::loop().inputPrefix_ = lua_tostring(L,-args);
+        return 0;
+    }
+    // }}} Loop::setInputPrefix_()
+
+    // {{{ Loop::setInputPrefix_()
+    int Loop::setCommandNotFound_(lua_State* L)
+    {
+        int args{lua_gettop(L)};
+        if (args > 0)
+            if (lua_isstring(L,-args))
+                Loop::loop().cmdNotFound_ = lua_tostring(L,-args);
+        return 0;
+    }
+    // }}} Loop::setInputPrefix_()
+
+    // {{{ Loop::getVersion_()
+    int Loop::getVersion_(lua_State* L)
+    {
+        lua_pushnumber(L,version::MAJOR);
+        lua_pushnumber(L,version::MINOR);
+        lua_pushnumber(L,version::PATCH);
+        lua_pushstring(L,version::SUFFIX);
+        lua_pushstring(L,version::NAME);
+        return 5;
+    }
+    // }}} Loop::getVersion_()
+
+    // {{{ Loop::wait_()
+    int Loop::wait_(lua_State* L)
+    {
+        int args{lua_gettop(L)};
+        if (args > 0)
+            if (lua_isnumber(L,-args))
+                std::this_thread::sleep_for(
+                       std::chrono::milliseconds(lua_tointeger(L,-args)));
+        return 0;
+    }
+    // }}} Loop::wait_()
+    // }}} Lua functions

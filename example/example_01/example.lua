@@ -44,11 +44,25 @@ end
 -- This function will be executed when the user types "help"
 -- It just prints some basic commands you can use
 function adv_input_help()
+    print "q - Quit game"
     print "n - Go northward"
     print "e - Go eastward"
     print "s - Go southward"
     print "w - Go westward"
 end
+
+-- It's always good to have a quit command
+function adv_input_q()
+    print "Do you really want to quit this awesome game?! (y,[n])"
+    input = string.lower(adv_input()) or nil;
+    if input == "y" or input == "yes" then
+        print "Bye :'("
+        adv_quit()
+    else 
+        print "Hooray! You wanna stay!"
+    end
+end
+
 
 -- Those four functions will be executed it the player types n, s, e or w
 -- They call predefined functions from 4dventure that will update the
@@ -99,8 +113,14 @@ function adv_input_(string,...)
     if command == "go" or command == "walk" then
         -- Again we convert the first argument that has to be the direction
         -- to lower case
+        -- In order for both Lua5.1 and Lua5.2 to work we check if there
+        -- is an argument(if there is not, the latter would panic because you
+        -- try to index it) and whether the first element of the argument list
+        -- exists (else there would be arg, but no arg[1] in Lua5.1)
         local s
-        s = string.lower(arg[1]) or nil
+    if arg and arg[1] then
+	        s = string.lower(arg[1])
+    end
 
         -- Here we go through all our cases that could be directions
         if     s == "n" or s == "north" then
@@ -175,7 +195,7 @@ function adv_onTile(string)
         repeat
             print "Choose:"
             input = string.lower(adv_input()) or nil;
-        until input input == "y" or input == "n"
+        until input == "y" or input == "n"
 
         -- Depending on the input we'll have another event
         if input == "Y" or input == "y" then

@@ -32,6 +32,7 @@
 // {{{ Lua functions names
 // {{{ Callable in LUA
 constexpr char LUA_QUIT[]           = "adv_quit";
+constexpr char LUA_GETVERSION[]     = "adv_version";
 constexpr char LUA_SETMAP[]         = "adv_setMap";
 constexpr char LUA_SETPP[]          = "adv_setPlayerPosition";
 constexpr char LUA_GETPP[]          = "adv_getPlayerPosition";
@@ -42,6 +43,8 @@ constexpr char LUA_GOWEST[]         = "adv_goWest";
 constexpr char LUA_DOINPUT[]        = "adv_input";
 constexpr char LUA_RANDOMRANGED[]   = "adv_random_ranged";
 constexpr char LUA_SETINPUTPREFIX[] = "adv_setInputPrefix";
+constexpr char LUA_SETCMDNOTFOUND[] = "adv_setCommandNotFound";
+constexpr char LUA_WAIT[]           = "adv_wait";
 
 inline std::string LUA_INPUT(const std::string& s)
 { return std::string("adv_input_")+s; }

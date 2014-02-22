@@ -22,6 +22,7 @@
 
 // {{{ Includes
 #include "loop.hpp"
+#include "version.hpp"
 // }}} Includes
 
 // {{{ main()
@@ -36,7 +37,7 @@ int main(int argc,char* argv[])
             std::cout << "This programm allows you to run specific "
                 << "text adventures written in Lua for 4dventure." 
                 << std::endl;
-            std::cout << "You can close a game anytime using 'quit'."
+            std::cout << "You can close a game anytime using 'Ctrl-C'."
                 << std::endl;
             // }}} Print help
         } else if (std::string(argv[1]) == "--license") {
@@ -48,6 +49,12 @@ int main(int argc,char* argv[])
             std::cout << "This is free software, and you are welcome to " 
                 << "redistribute it under certain conditions;" << std::endl;
             // }}} Print license
+        } else if (std::string(argv[1]) == "--version") {
+            // {{{ Print version
+            std::cout << version::MAJOR << "." << version::MINOR << "."
+                << version::PATCH << "-" << version::SUFFIX << " "
+                << version::NAME << std::endl;
+            // }}} Print version
         } else {
             Loop::loop().run(argv[1]);
         }

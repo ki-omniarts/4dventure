@@ -50,12 +50,13 @@ class Loop
     // {{{ Member variables
     std::unique_ptr<Map> map_   = std::unique_ptr<Map>{new Map{}};
     std::string inputString_    = "";
+    std::string cmdNotFound_    = MESSAGE_COMMAND_NOT_FOUND;
     bool running_               = true;
     Point playerPos_            = Point{0,0};
     std::string inputPrefix_    = INPUT_PREFIX;
 
     std::shared_ptr<lua_State>L_= 
-        std::shared_ptr<lua_State>{lua_open(),lua_close};
+        std::shared_ptr<lua_State>{luaL_newstate(),lua_close};
     // }}} Member variables
 
     // {{{ LUA functions
@@ -71,6 +72,9 @@ class Loop
     static bool obstacle_(lua_State* L,char c);
     static int input_(lua_State* L);
     static int setInputPrefix_(lua_State* L);
+    static int setCommandNotFound_(lua_State* L);
+    static int getVersion_(lua_State* L);
+    static int wait_(lua_State* L);
     // }}} LUA functions
 
     // {{{ Movement
