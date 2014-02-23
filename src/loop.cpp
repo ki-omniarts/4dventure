@@ -126,6 +126,16 @@ void Loop::run(const std::string& filename)
                 argv.push_back(buf);
         }
         // }}} Split arguments
+        
+        // {{{ Check for empty command
+        if (argv.empty())
+        {
+            lua_getglobal(L_.get(), LUA_EMPTY_INPUT );
+            if (lua_isfunction(L_.get(),lua_gettop(L_.get())))
+                lua_call(L_.get(),0,0);
+            return;
+        }
+        // }}} Check for empty command
 
         lua_getglobal(L_.get(), LUA_INPUT(argv[0]).c_str() );
         if (lua_isfunction(L_.get(),lua_gettop(L_.get())))
