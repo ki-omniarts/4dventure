@@ -81,6 +81,27 @@ OPTION( LIBRARY
 
 # {{{ Requirements
 #-------------
+Find_Path(PhysFS_INCLUDE_DIR physfs.h
+    # PATH_SUFFIXES include
+    # PATHS
+    # /usr/include
+    # /usr/local/include
+    )
+Find_Library( PhysFS_LIBRARY
+    NAMES physfs physicsfs
+    PATH_SUFFIXES lib lib64 lib32
+    PATHS
+    /usr
+    /
+    /usr/local
+    )
+if ( PhysFS_LIBRARY AND PhysFS_INCLUDE_DIR )
+    MESSAGE( STATUS "Found PhysicsFS: ${PhysFS_LIBRARY}" )
+else ( PhysFS_LIBRARY AND PhysFS_INCLUDE_DIR )
+    MESSAGE( FATAL_ERROR "PhysicsFS not found!" )
+endif ( PhysFS_LIBRARY AND PhysFS_INCLUDE_DIR )
+
+
 if( NOT ${STANDALONE} )
     include(FindLua50)
     include(FindLua51)
@@ -144,10 +165,12 @@ endif ( ${LIBRARY} )
 if( NOT ${STANDALONE} )
 target_link_libraries( ${PROJECT_NAME}
     ${LUA_LIBRARIES}
+    ${PhysFS_LIBRARY}
 )
 if ( ${LIBRARY} )
     target_link_libraries( ${LIBRARY_NAME}
         ${LUA_LIBRARIES}
+        ${PhysFS_LIBRARY}
     )
 endif ( ${LIBRARY} )
 endif( NOT ${STANDALONE} )

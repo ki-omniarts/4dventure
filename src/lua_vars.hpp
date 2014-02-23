@@ -58,6 +58,12 @@ constexpr char LUA_EACHTIME[]       = "adv_eachTime";
 // }}} Called by 4dventure
 // }}} Lua functions names
 
+// {{{ Lua ZIP
+constexpr char LUA_MAIN_FILE[][16]  ={"main","main.lua","main.4dv","main.4lua",
+                                      "init","init.lua","init.4dv","init.4lua"};
+constexpr char LUA_ZIP_MAGIC[][3]   = {"PK"};
+// }}} Lua ZIP
+
 // {{{ Include guards
 #endif
 // }}} Include guards

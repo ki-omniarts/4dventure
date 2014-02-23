@@ -23,6 +23,11 @@
 // {{{ Includes
 #include "loop.hpp"
 #include "version.hpp"
+
+extern "C" 
+{
+    #include "physfs.h"
+}
 // }}} Includes
 
 // {{{ main()
@@ -56,7 +61,11 @@ int main(int argc,char* argv[])
                 << version::NAME << std::endl;
             // }}} Print version
         } else {
-            Loop::loop().run(argv[1]);
+            int zip = 0;
+            if (!PHYSFS_init(argv[0]))
+                zip=-1;
+            Loop::loop().run(argv[1],zip);
+            PHYSFS_deinit(); // TODO: RAII-Helper
         }
         // }}} With an argument
     } else {

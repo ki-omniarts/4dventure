@@ -23,10 +23,16 @@
 // {{{ Includes
 #include "loop.hpp"
 #include "version.hpp"
+
 #include <stdexcept>
 #include <sstream>
 #include <thread>
 #include <chrono>
+
+extern "C"
+{
+    #include "physfs.h"
+}
 // }}} Includes
 
 // {{{ Loop::loop()
@@ -48,8 +54,59 @@ Loop::~Loop() noexcept {}
 // }}} Destructor
 // }}} Loop *ctors
 
+// {{{ Loop::doLuaFile_()
+bool Loop::doLuaFile_(const std::string& filename)
+{
+    return luaL_dofile(L_.get(),filename.c_str());
+}
+// }}} Loop::doLuaFile_()
+
+// {{{ Loop::doLuaZip_()
+bool Loop::doLuaZip_(const std::string& filename,int zip)
+{
+    if (zip==-1)
+    {
+        std::string tmp{"Can't initialize PhysicsFS!\n"};
+        tmp += PHYSFS_getLastError();
+        throw std::runtime_error(tmp);
+    }
+
+    if (!PHYSFS_mount(filename.c_str(),"",1))
+    {
+        std::string tmp{"Can't open archive "};
+        tmp += filename;
+        tmp += "!\n";
+        tmp += PHYSFS_getLastError();
+        throw std::runtime_error(tmp);
+    }
+
+    std::string lua_filename{""};
+    for (auto s:LUA_MAIN_FILE)
+        if (PHYSFS_exists(s))
+        {
+            lua_filename = s;
+            break;
+        }
+
+    if (lua_filename == "")
+        throw std::runtime_error("No main file found!");
+
+    std::shared_ptr<PHYSFS_file> lua_file
+        { PHYSFS_openRead(lua_filename.c_str()),PHYSFS_close };
+    char* buffer = new char[PHYSFS_fileLength(lua_file.get())];
+    if (PHYSFS_read(lua_file.get(),buffer,1,PHYSFS_fileLength(lua_file.get())-1)
+            ==-1)
+        throw std::runtime_error("Could not read main file!");
+
+    std::string lua_main = buffer;
+    delete buffer; // TODO improve this part and make it RAII
+
+    return luaL_dostring(L_.get(),lua_main.c_str());
+}
+// }}} Loop::doLuaZip_()
+
 // {{{ Loop::run()
-void Loop::run(const std::string& filename)
+void Loop::run(const std::string& filename,int zip)
 {
     // {{{ LUA init
     luaopen_base(L_.get());
@@ -72,14 +129,30 @@ void Loop::run(const std::string& filename)
     // }}} LUA init
 
     // {{{ Read LUA file
-    if (luaL_dofile(L_.get(),filename.c_str()) == 1)
     {
-        std::string tmp{""};
-        tmp += filename;
-        tmp += " is no valid LUA file.\n";
-        tmp += lua_tostring(L_.get(),-1);
+        if (!zip)
+        {
+            std::fstream tmp{filename};
+            std::string buf{"  "};
+            char* cbuf = &*buf.begin();
+            tmp.read(cbuf,2);
+            std::cout << buf << std::endl;
+            for (auto s:LUA_ZIP_MAGIC)
+                if (buf==s)
+                {
+                    zip=1;
+                    break;
+                }
+        }
+        if ( (zip)?doLuaZip_(filename,zip):doLuaFile_(filename) )
+        {
+            std::string tmp{""};
+            tmp += filename;
+            tmp += " is no valid LUA file.\n";
+            tmp += lua_tostring(L_.get(),-1);
 
-        throw std::runtime_error{tmp};
+            throw std::runtime_error{tmp};
+        }
     }
     // }}} Read LUA file
     

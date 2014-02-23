@@ -59,6 +59,11 @@ class Loop
         std::shared_ptr<lua_State>{luaL_newstate(),lua_close};
     // }}} Member variables
 
+    // {{{ Helper functions
+    bool doLuaFile_(const std::string& filename);
+    bool doLuaZip_(const std::string& filename,int zip);
+    // }}} Helper functions
+
     // {{{ LUA functions
     static int setMap_(lua_State* L);
     static int setPlayerPos_(lua_State* L);
@@ -108,7 +113,8 @@ class Loop
         // }}} Singleton Getter
 
         // {{{ Public member functions
-        void run(const std::string& filename); // throws std::runtime_error
+        void run(const std::string& filename,int zip);
+            // throws std::runtime_error
         // }}} Public member functions
 
 };
