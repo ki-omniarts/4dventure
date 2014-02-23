@@ -12,14 +12,9 @@ Just type a map using ASCII-charakters,
 assign functions to simple commands
 and be creative!
 
-And if you need more than just that -- don't worry --
-all scripting you like can be done in Lua!
-
-## Future plans ##
-
-We're planning to add options to compile 4dventure
-as a static or shared library
-allowing you to add more advanced features.
+And if you need more than just that -- don't worry!
+All scripting you want can be done in Lua, a simple
+yet powerful programming language.
 
 ## Development ##
 
@@ -63,7 +58,7 @@ https://github.com/ki-omniarts/4dventure.
 You might consider using some of the following options:
 
 * `-DSTANDALONE=1` to build without Lua dependencies
-* `-DLIBRARY=0` to turn of library building
+* `-DLIBRARY=0` to turn off library building
 * `-DBUILD_SHARED_LIBS=1` to build shared libs instead of static libs.
 
 Notice that static libs will be installed in your local lib-Folder.
