@@ -1,4 +1,4 @@
-Now we have a project that contains more then one file.
+Now we have a project that contains more than one file.
 You can view these files in the subdirectory `files`.
 It's actually the same as `example_01` but all commands and map events have been
 moved to seperate modules which makes it much easier to work with.
