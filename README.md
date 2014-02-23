@@ -1,4 +1,4 @@
-# 4dventure v1.2.0 – Chuck the Plant #
+# 4dventure v1.2.2 – Chuck the Plant #
 
 ## Are you ready for an 4dventure? ##
 
@@ -77,6 +77,11 @@ To install globally:
     $ sudo make install
 
 ## Changelog ##
+
+#### 1.2.2 ####
+
+* Fixed SIGSEGV at empty user input
+* Added `adv_emptyInput()` to catch an empty input in Lua
 
 ### 1.2.0 ###
 

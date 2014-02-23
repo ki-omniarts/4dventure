@@ -45,6 +45,7 @@ constexpr char LUA_RANDOMRANGED[]   = "adv_random_ranged";
 constexpr char LUA_SETINPUTPREFIX[] = "adv_setInputPrefix";
 constexpr char LUA_SETCMDNOTFOUND[] = "adv_setCommandNotFound";
 constexpr char LUA_WAIT[]           = "adv_wait";
+constexpr char LUA_EMPTY_INPUT[]    = "adv_emptyInput";
 
 inline std::string LUA_INPUT(const std::string& s)
 { return std::string("adv_input_")+s; }
