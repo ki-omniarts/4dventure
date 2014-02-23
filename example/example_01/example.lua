@@ -1,3 +1,4 @@
+#!/usr/bin/env 4dventure
 -----------------------
 -- 4dventure example --
 -----------------------
