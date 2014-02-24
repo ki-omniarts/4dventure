@@ -27,10 +27,13 @@ https://github.com/ki-omniarts/4dventure.
 
 ## Features ##
 
+ * Map Support
+ * Easy Framework
+ * Games in zip Files
+
 ### Upcoming ###
 
  * Image Maps, Waypoint Maps, advanced Map API for dynamic Maps
- * zip File Support
  * Ingame Sounds
  * Some Lua libraries that will make your life easier
  * More Examples
@@ -48,6 +51,7 @@ https://github.com/ki-omniarts/4dventure.
  * glibc++
  * Lua (tested with 5.1 and 5.2)
  * CMAKE >= 2.8
+ * PhysicsFS >= 2.0
 
 ### How to install ###
 
@@ -57,7 +61,7 @@ https://github.com/ki-omniarts/4dventure.
 
 You might consider using some of the following options:
 
-* `-DSTANDALONE=1` to build without Lua dependencies
+* `-DSTANDALONE=1` to build without Lua dependencies (not quite working yet)
 * `-DLIBRARY=0` to turn off library building
 * `-DBUILD_SHARED_LIBS=1` to build shared libs instead of static libs.
 
