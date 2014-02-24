@@ -136,7 +136,6 @@ void Loop::run(const std::string& filename,int zip)
             std::string buf{"  "};
             char* cbuf = &*buf.begin();
             tmp.read(cbuf,2);
-            std::cout << buf << std::endl;
             for (auto s:LUA_ZIP_MAGIC)
                 if (buf==s)
                 {
