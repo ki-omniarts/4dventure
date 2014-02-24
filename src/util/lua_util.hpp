@@ -42,8 +42,8 @@
  */
 // }}} LICENSE
 
-#ifndef LOVE_RUNTIME_H
-#define LOVE_RUNTIME_H
+#ifndef ADVENTURE_LUA_UTIL_HPP
+#define ADVENTURE_LUA_UTIL_HPP
 
 // LOVE
 #include "types.h"
@@ -56,9 +56,6 @@ extern "C" {
 	#include <lualib.h>
 	#include <lauxlib.h>
 }
-
-namespace love
-{
 
 // Forward declarations.
 class Module;
@@ -513,6 +510,4 @@ Type luax_type(lua_State *L, int idx);
 		return luaL_error(L, "%s", lua_tostring(L, -1)); \
 }
 
-} // love
-
-#endif // LOVE_RUNTIME_H
+#endif // ADVENTURE_LUA_UTIL_HPP

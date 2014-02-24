@@ -44,7 +44,7 @@
 
 
 #include "config.h"
-#include "runtime.h"
+#include "runtime.hpp"
 
 // LOVE
 #include "Module.h"
@@ -267,7 +267,7 @@ int luax_register_module(lua_State *L, const WrappedModule &m)
 	lua_setfield(L, -2, m.name); // _modules[name] = proxy
 	lua_pop(L, 1);
 
-	// Gets the love table.
+	// Gets the adventure table.
 	luax_insistglobal(L, "love");
 
 	// Create new table for module.
