@@ -12,6 +12,7 @@ print ("You're lost in your garden, you should try to find your house.")
 --print(map)
 
 -- We give the map to 4dventure
+-- Note how we use the namespace `map` to adress a variable from another file
 adv_setMap(map.map)
 
 -- You can use a function called adv_eachTime() you want to have processed
