@@ -268,7 +268,7 @@ int luax_register_module(lua_State *L, const WrappedModule &m)
 	lua_pop(L, 1);
 
 	// Gets the adventure table.
-	luax_insistglobal(L, "love");
+	luax_insistglobal(L, "adv"); // TODO: define elsewhere
 
 	// Create new table for module.
 	lua_newtable(L);
@@ -329,7 +329,7 @@ int luax_register_type(lua_State *L, const char *tname, const luaL_Reg *f)
 		lua_setmetatable(L, -2);
 
 		// registry._lovetypes = newtable
-		lua_setfield(L, LUA_REGISTRYINDEX, "_lovetypes");
+		lua_setfield(L, LUA_REGISTRYINDEX, "_lovetypes"); // TODO: define elsewhere
 	}
 	else
 		lua_pop(L, 1);
@@ -487,7 +487,8 @@ void luax_pushtype(lua_State *L, const char *name, bits flags, love::Object *dat
 	// Keep the Proxy userdata on the stack.
 }
 
-bool luax_istype(lua_State *L, int idx, love::bits type)
+template <typename bits>
+bool luax_istype(lua_State *L, int idx, bits type)
 {
 	if (lua_type(L, idx) != LUA_TUSERDATA)
 		return false;
@@ -497,7 +498,7 @@ bool luax_istype(lua_State *L, int idx, love::bits type)
 
 int luax_getfunction(lua_State *L, const char *mod, const char *fn)
 {
-	lua_getglobal(L, "love");
+	lua_getglobal(L, "love"); // TODO: define elsewhere
 	if (lua_isnil(L, -1)) return luaL_error(L, "Could not find global love!");
 	lua_getfield(L, -1, mod);
 	if (lua_isnil(L, -1)) return luaL_error(L, "Could not find love.%s!", mod);
@@ -594,7 +595,7 @@ int luax_insistglobal(lua_State *L, const char *k)
 	return 1;
 }
 
-int luax_insistlove(lua_State *L, const char *k)
+int luax_insistlove(lua_State *L, const char *k) // TODO: convert for adv
 {
 	luax_insistglobal(L, "love");
 	luax_insist(L, -1, k);
@@ -678,6 +679,7 @@ extern "C" int luax_typerror(lua_State *L, int narg, const char *tname)
 	return luaL_argerror(L, narg, msg);
 }
 
+// TODO: Make portable
 StringMap<Type, TYPE_MAX_ENUM>::Entry typeEntries[] =
 {
 	{"Invalid", INVALID_ID},

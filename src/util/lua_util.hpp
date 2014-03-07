@@ -96,6 +96,7 @@ struct Proxy
 /**
  * A Module with Lua wrapper functions and other data.
  **/
+template <typename bits>
 struct WrappedModule
 {
 	// The module containing the functions.
@@ -105,7 +106,7 @@ struct WrappedModule
 	const char *name;
 
 	// The type flags of this module.
-	love::bits flags;
+	bits flags;
 
 	// The functions of the module (last element {0,0}).
 	const luaL_Reg *functions;
@@ -419,8 +420,8 @@ extern "C" { // Also called from luasocket
  * @param name The name of the type.
  * @param type The type bit.
  **/
-template <typename T>
-T *luax_checktype(lua_State *L, int idx, const char *name, love::bits type)
+template <typename T,typename bits>
+T *luax_checktype(lua_State *L, int idx, const char *name, bits type)
 {
 	if (lua_type(L, idx) != LUA_TUSERDATA)
 		luax_typerror(L, idx, name);
@@ -433,8 +434,8 @@ T *luax_checktype(lua_State *L, int idx, const char *name, love::bits type)
 	return (T *)u->data;
 }
 
-template <typename T>
-T *luax_getmodule(lua_State *L, const char *k, love::bits type)
+template <typename T,typename bits>
+T *luax_getmodule(lua_State *L, const char *k, bits type)
 {
 	luax_insistregistry(L, REGISTRY_MODULES);
 	lua_getfield(L, -1, k);
@@ -452,8 +453,8 @@ T *luax_getmodule(lua_State *L, const char *k, love::bits type)
 	return (T *)u->data;
 }
 
-template <typename T>
-T *luax_optmodule(lua_State *L, const char *k, love::bits type)
+template <typename T,typename bits>
+T *luax_optmodule(lua_State *L, const char *k, bits type)
 {
 	luax_insistregistry(L, REGISTRY_MODULES);
 	lua_getfield(L, -1, k);
@@ -483,8 +484,8 @@ T *luax_optmodule(lua_State *L, const char *k, love::bits type)
  * @param name The name of the type.
  * @param type The type bit.
  **/
-template <typename T>
-T *luax_totype(lua_State *L, int idx, const char * /* name */, love::bits /* type */)
+template <typename T,typename bits>
+T *luax_totype(lua_State *L, int idx, const char * /* name */, bits /* type */)
 {
 	return (T *)(((Proxy *)lua_touserdata(L, idx))->data);
 }
