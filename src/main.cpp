@@ -23,6 +23,7 @@
 // {{{ Includes
 #include "loop.hpp"
 #include "version.hpp"
+#include "messages.hpp"
 // }}} Includes
 
 // {{{ main()
@@ -34,20 +35,11 @@ int main(int argc,char* argv[])
         if (std::string(argv[1]) == "--help")
         {
             // {{{ Print help
-            std::cout << "This programm allows you to run specific "
-                << "text adventures written in Lua for 4dventure." 
-                << std::endl;
-            std::cout << "You can close a game anytime using 'Ctrl-C'."
-                << std::endl;
+            std::cout << MESSAGE_HELP << std::endl;
             // }}} Print help
         } else if (std::string(argv[1]) == "--license") {
             // {{{ Print license
-            std::cout << "4dventure  Copyright (C) 2012  KiNaudiz"
-                << std::endl;
-            std::cout << "This program comes with ABSOLUTELY NO WARRANTY; "
-                << "for details type `show w'." << std::endl;
-            std::cout << "This is free software, and you are welcome to " 
-                << "redistribute it under certain conditions;" << std::endl;
+            std::cout << MESSAGE_LICENSE << std::endl;
             // }}} Print license
         } else if (std::string(argv[1]) == "--version") {
             // {{{ Print version
@@ -61,13 +53,7 @@ int main(int argc,char* argv[])
         // }}} With an argument
     } else {
         // {{{ Usage
-        std::cout << "Usage:" << std::endl;
-        std::cout << argv[0] << " [Option|Filename]" << std::endl;
-        std::cout << "Options:" << std::endl;
-        std::cout << "--help\tPrints a small programm information"
-            << std::endl;
-        std::cout << "--license\tPrint the licensing information"
-            << std::endl;
+        std::printf(MESSAGE_USAGE,argv[0]);
         // }}} Usage
     }
 

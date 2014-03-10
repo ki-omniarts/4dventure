@@ -25,8 +25,34 @@
 #define ADVENTURE_MESSAGES_HPP
 // }}} Include guards
 
+// {{{ Includes
+#include <string>
+// }}} Includes
+
 // {{{ Message constants
 constexpr char MESSAGE_COMMAND_NOT_FOUND[]  = "Command not found.";
+constexpr char MESSAGE_HELP[]               =
+R"(
+      This programm allows you to run specific text adventures
+                    written in Lua for 4dventure.
+             You can close a game anytime using 'Ctrl-C'.
+)";
+constexpr char MESSAGE_USAGE[]              =
+R"(
+Usage:
+    %s [Option|Filename]
+Options:
+    --help      Prints a small programm information
+    --license   Print the licensing information
+)";
+constexpr char MESSAGE_LICENSE[]            =
+R"(
+            4dventure  Copyright (C) 2012-2014  KiNaudiz
+
+This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
+     This is free software, and you are welcome to redistribute it
+                    under certain conditions;
+)";
 // }}} Message constants
 
 // {{{ Include guards
