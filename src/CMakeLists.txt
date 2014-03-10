@@ -68,11 +68,6 @@ SET ( PLATTFORM
     "none"
 )
 
-OPTION( STANDALONE
-    "Set this to build a standalone version with lua built in."
-    off
-)
-
 OPTION( LIBRARY
     "Set this to build a shared or static library depending on BUILD_SHARED_LIBS."
     on
@@ -81,23 +76,19 @@ OPTION( LIBRARY
 
 # {{{ Requirements
 #-------------
-if( NOT ${STANDALONE} )
-    include(FindLua50)
-    include(FindLua51)
-    include(FindLua52)
+include(FindLua50)
+include(FindLua51)
+include(FindLua52)
 
-    if ( ( NOT ${LUA51_FOUND} ) AND ( NOT ${LUA50_FOUND} 
-            AND ( NOT ${LUA52_FOUND} ) ) )
-        message ( FATAL_ERROR "Lua not found!" )
-    endif ( ( NOT ${LUA51_FOUND} ) AND ( NOT ${LUA50_FOUND} 
-            AND ( NOT ${LUA52_FOUND} ) ) )
+if ( ( NOT ${LUA51_FOUND} ) AND ( NOT ${LUA50_FOUND} 
+        AND ( NOT ${LUA52_FOUND} ) ) )
+    message ( FATAL_ERROR "Lua not found!" )
+endif ( ( NOT ${LUA51_FOUND} ) AND ( NOT ${LUA50_FOUND} 
+        AND ( NOT ${LUA52_FOUND} ) ) )
 
-    include_directories(
-        ${LUA_INCLUDE_DIR}
-    )
-else( NOT ${STANDALONE} )
-    
-endif( NOT ${STANDALONE} )
+include_directories(
+    ${LUA_INCLUDE_DIR}
+)
 # }}} Requirements
 
 # {{{ Files
@@ -111,12 +102,6 @@ SET (4dventureSRC
     ${4dventureLibSRC}
     ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
 )
-if( ${STANDALONE} )
-    SET( 4dventureSRC
-        ${4dventureSRC}
-        ${LUA_SRC}
-    )
-endif( ${STANDALONE} )
 
 CONFIGURE_FILE (
     ${CMAKE_CURRENT_SOURCE_DIR}/version.hpp.in
@@ -141,7 +126,6 @@ if ( ${LIBRARY} )
         ${4dventureLibSRC} )
 endif ( ${LIBRARY} )
 
-if( NOT ${STANDALONE} )
 target_link_libraries( ${PROJECT_NAME}
     ${LUA_LIBRARIES}
 )
@@ -150,7 +134,6 @@ if ( ${LIBRARY} )
         ${LUA_LIBRARIES}
     )
 endif ( ${LIBRARY} )
-endif( NOT ${STANDALONE} )
 # }}} Compile
 
 # {{{ Install
