@@ -26,6 +26,7 @@
 // }}} Include Guards
 
 // {{{ Commands
+/*! Constant holding the default quit command */
 constexpr char COMMAND_QUIT[] = "quit";
 // }}} Commands
 
