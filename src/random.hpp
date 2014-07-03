@@ -32,23 +32,30 @@
 // }}} Includes
 
 // {{{ random_ranged()
+/*! returns a random number between ll and uu to Lua */
 inline int random_ranged(lua_State* L)
 {
+    // check if two arguments are given in Lua
     const int args = lua_gettop(L);
     if (args > 1)
     {
+        // check if both arguments are integers
         if (lua_isnumber(L,-args) && lua_isnumber(L,-args+1))
         {
+            // fetch operands
             const int ll = lua_tonumber(L,-args);
             const int uu = lua_tonumber(L,-args+1);
         
+            // create random number generator
             std::random_device generator;
             std::uniform_int_distribution<int> distribution(ll,uu);
             
+            // compute result and push it to Lua stack
             const int result = distribution(generator);
             lua_pushnumber(L,result);
         }
     }
+    // number of returned values (1)
     return 1;
 }
 // }}} random_ranged()

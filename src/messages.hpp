@@ -30,6 +30,7 @@
 // }}} Includes
 
 // {{{ Message constants
+/*! default message on an invalid command */
 constexpr char MESSAGE_COMMAND_NOT_FOUND[]  = "Command not found.";
 constexpr char MESSAGE_HELP[]               =
 R"(
@@ -37,6 +38,7 @@ R"(
                     written in Lua for 4dventure.
              You can close a game anytime using 'Ctrl-C'.
 )";
+/*! usage message */
 constexpr char MESSAGE_USAGE[]              =
 R"(
 Usage:
@@ -45,6 +47,7 @@ Options:
     --help      Prints a small programm information
     --license   Print the licensing information
 )";
+/*! license information */
 constexpr char MESSAGE_LICENSE[]            =
 R"(
             4dventure  Copyright (C) 2012-2014  KiNaudiz

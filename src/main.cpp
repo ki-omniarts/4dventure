@@ -33,26 +33,30 @@ int main(int argc,char* argv[])
     {
         // {{{ With an argument
         if (std::string(argv[1]) == "--help")
-        {
             // {{{ Print help
+            // print help if the the program is run with --help
             std::cout << MESSAGE_HELP << std::endl;
             // }}} Print help
-        } else if (std::string(argv[1]) == "--license") {
+        else if (std::string(argv[1]) == "--license")
             // {{{ Print license
+            // print license if the the program is run with --license
             std::cout << MESSAGE_LICENSE << std::endl;
             // }}} Print license
-        } else if (std::string(argv[1]) == "--version") {
+        else if (std::string(argv[1]) == "--version") {
             // {{{ Print version
+            // print license if the the program is run with --license
+            std::cout << MESSAGE_LICENSE << std::endl;
             std::cout << version::MAJOR << "." << version::MINOR << "."
                 << version::PATCH << "-" << version::SUFFIX << " "
                 << version::NAME << std::endl;
             // }}} Print version
-        } else {
+        } else
+            // run program with given filename or path
             Loop::loop().run(argv[1]);
-        }
         // }}} With an argument
     } else {
         // {{{ Usage
+        // print a usage message if the program is run w/o args
         std::printf(MESSAGE_USAGE,argv[0]);
         // }}} Usage
     }
