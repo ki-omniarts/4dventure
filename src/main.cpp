@@ -23,8 +23,9 @@
 // {{{ Includes
 #include "loop.hpp"
 #include "version.hpp"
+#include "messages.hpp"
 
-extern "C" 
+extern "C"
 {
     #include "physfs.h"
 }
@@ -37,46 +38,37 @@ int main(int argc,char* argv[])
     {
         // {{{ With an argument
         if (std::string(argv[1]) == "--help")
-        {
             // {{{ Print help
-            std::cout << "This programm allows you to run specific "
-                << "text adventures written in Lua for 4dventure." 
-                << std::endl;
-            std::cout << "You can close a game anytime using 'Ctrl-C'."
-                << std::endl;
+            // print help if the the program is run with --help
+            std::cout << MESSAGE_HELP << std::endl;
             // }}} Print help
-        } else if (std::string(argv[1]) == "--license") {
+        else if (std::string(argv[1]) == "--license")
             // {{{ Print license
-            std::cout << "4dventure  Copyright (C) 2012  KiNaudiz"
-                << std::endl;
-            std::cout << "This program comes with ABSOLUTELY NO WARRANTY; "
-                << "for details type `show w'." << std::endl;
-            std::cout << "This is free software, and you are welcome to " 
-                << "redistribute it under certain conditions;" << std::endl;
+            // print license if the the program is run with --license
+            std::cout << MESSAGE_LICENSE << std::endl;
             // }}} Print license
-        } else if (std::string(argv[1]) == "--version") {
+        else if (std::string(argv[1]) == "--version") {
             // {{{ Print version
+            // print license if the the program is run with --license
+            std::cout << MESSAGE_LICENSE << std::endl;
             std::cout << version::MAJOR << "." << version::MINOR << "."
                 << version::PATCH << "-" << version::SUFFIX << " "
                 << version::NAME << std::endl;
             // }}} Print version
         } else {
+            // init physfs and check if filename leads to a zip
             int zip = 0;
             if (!PHYSFS_init(argv[0]))
                 zip=-1;
+            // run program with given filename or path
             Loop::loop().run(argv[1],zip);
             PHYSFS_deinit(); // TODO: RAII-Helper
         }
         // }}} With an argument
     } else {
         // {{{ Usage
-        std::cout << "Usage:" << std::endl;
-        std::cout << argv[0] << " [Option|Filename]" << std::endl;
-        std::cout << "Options:" << std::endl;
-        std::cout << "--help\tPrints a small programm information"
-            << std::endl;
-        std::cout << "--license\tPrint the licensing information"
-            << std::endl;
+        // print a usage message if the program is run w/o args
+        std::printf(MESSAGE_USAGE,argv[0]);
         // }}} Usage
     }
 

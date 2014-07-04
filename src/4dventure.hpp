@@ -31,6 +31,7 @@ namespace c4dventure
 
 #include "loop.hpp"
 
+/*! Function to run a 4dventure file from cpp */
 inline void runFile(const std::string& file)
 { Loop::loop().run(file); }
 

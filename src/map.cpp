@@ -86,13 +86,17 @@ Map& Map::operator=(Map&& other)
 // {{{ Map::generateTiles_()
 void Map::generateTiles_(const std::string& mapstring)
 {
+    // create a temporary Tiles object
     Map::Tiles tiles;
+    // create a temporary list of symbols on the map
     std::vector<tile_id_t> symbols{};
+    // current line and column, beginning with (0,0)
     size_t current_line{0};
     size_t current_col{0};
+    // add first row to tiles
     tiles.push_back(std::vector<Point>());
 
-    // go through each char
+    // go through each char in given ASCII string
     for (size_t i = 0; i != mapstring.size(); i++)
     {
         // begin a new vector when a new line starts
@@ -100,22 +104,24 @@ void Map::generateTiles_(const std::string& mapstring)
         {
             current_line++;
             current_col = 0;
+            // add new line for each linebreak
             tiles.push_back(std::vector<Point>());
         } else {
-            // is there a reserved char?
+            // is there a reserved char? -- if so, return without any change
+            // TODO: optimize by moving this after symbols-check
             for (size_t s = 0; s != reservedSymbols_.size(); s++)
-            {
                 if  (
                         static_cast<tile_id_t>(mapstring[i]) 
                         == reservedSymbols_[s] 
                     )
                     return;
-            }
             tiles[current_line].push_back
                 (Point(current_col,current_line,
                     static_cast<tile_id_t>(mapstring[i])));
-            // add the char to the list of symbols
+            // add char to the list of symbols
             {
+                // first look if char already is listed in list of symbols
+                // XXX: optimize search? -- use list of symbols as sorted list?
                 bool not_found = true;
                 for (size_t s = 0; s != symbols.size(); s++)
                 {
@@ -128,10 +134,11 @@ void Map::generateTiles_(const std::string& mapstring)
                 if (not_found)
                     symbols.push_back(static_cast<tile_id_t>(mapstring[i]));
             }
-        }
-        if ( mapstring[i] != '\n' )
             current_col++;
+        }
     }
+
+    // move temporary objects to assign values
     data_->tiles    = std::move(tiles);
     data_->symbols  = std::move(symbols);
 }
@@ -140,16 +147,20 @@ void Map::generateTiles_(const std::string& mapstring)
 // {{{ Map::startpoint()
 const Point Map::startpoint() const
 {
+    // create temporary Point
     Point p{0,0};
 
+    // search for startpoint symbol -- TODO: 'S' as a const, optimize search
     for(auto y : data_->tiles)
         for(auto x : y)
             if ( ( x.tile() == 'S' ) && ( p == Point(0,0) ) )
             {
+                // assign found Point and return
                 p = x;
                 return p;
             }
 
+    // return (0,0) on default
     return p;
 }
 // }}} Map::startpoint()
@@ -157,6 +168,7 @@ const Point Map::startpoint() const
 // {{{ Map::exists()
 bool Map::exists(const Point& p) const
 {
+    // check for map boundaries
     return (  ( p.y() < data_->tiles.size() ) 
            && ( p.x() < data_->tiles[p.y()].size() ) );
 }

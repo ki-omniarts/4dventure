@@ -24,10 +24,15 @@
 namespace version 
 {
 
+/*! major version */
 constexpr unsigned int MAJOR = @4DVENTURE_VERSION_MAJOR@;
+/*! minor version */
 constexpr unsigned int MINOR = @4DVENTURE_VERSION_MINOR@;
+/*! patch version */
 constexpr unsigned int PATCH = @4DVENTURE_VERSION_PATCH@;
+/*! version suffix */
 constexpr char      SUFFIX[] = "@4DVENTURE_VERSION_SUFFIX@";
+/*! version name */
 constexpr char        NAME[] = "@4DVENTURE_VERSION_NAME@";
 
 } // namespace: version

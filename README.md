@@ -19,7 +19,7 @@ yet powerful programming language.
 ## Development ##
 
 You can find the main repository at
-http://ki-omniarts.de/hg/4dventure/
+http://hg.ki-omniarts.de/4dventure/
 where the newest version will always be available for you.
 
 If you like you can also check out our github mirror at
@@ -61,7 +61,6 @@ https://github.com/ki-omniarts/4dventure.
 
 You might consider using some of the following options:
 
-* `-DSTANDALONE=1` to build without Lua dependencies (not quite working yet)
 * `-DLIBRARY=0` to turn off library building
 * `-DBUILD_SHARED_LIBS=1` to build shared libs instead of static libs.
 
